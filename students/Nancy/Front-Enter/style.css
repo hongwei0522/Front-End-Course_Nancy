@@ -1,3 +1,344 @@
-p {
-    color:red;
+* {
+    margin: 0;
+    padding: 0;
+    /* border:1px solid black; */
+}
+body {
+    /* max-width: 1044px; */
+    margin-left: auto;
+    margin-right: auto;
+    font-family: "Noto Sans TC", "華康黑體", "微軟正黑體", arial, sans-serif;
+}
+.navbar {
+    position: fixed;
+    right: 0;
+    left: 0;
+    z-index: 1030;
+    height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content:space-between;
+    background-color: rgb(255, 255, 255,.5);
+    margin-top: -100px;
+}
+/* navbar */
+.logo img {
+    height: 65px;
+    width: auto;
+}
+.navList {
+    height: 100px;
+    display: flex;
+    align-items: center;
+    margin-right: 30px;
+}
+a.item {
+    text-decoration: none;
+    color: #808080;
+    margin-right: 60px;
+}
+.navList img {
+    height: 19px;
+    width: auto;
+}
+/* aside */
+.aside {
+    position: fixed;
+    right: 0;
+    bottom: 180px;
+    z-index: 0;
+}
+.aside img {
+    width: 78px;
+    height: 69px;
+    
+}
+/* section */
+.container {
+    margin-top: 100px;
+    background-image: url("/image/key-visual.jpg");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    height: 580px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+.container img {
+    width: 20px;
+    height: 20px;
+    transform: rotate(90deg);
+}
+p.frontEnter {
+    margin-top: 150px;
+    font-size: 38px;
+    margin-bottom: 10px;
+    font-weight: bold;
+    color: white;
+}
+p.news {
+    font-size: 24px;
+    margin-bottom: 100px;
+    font-weight: bold;
+    color: white;
+}
+/* main */
+.service {
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    height: 580px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+.test {
+    background-image: url("/image/second-img.jpg");
+    background-color: rgba(0, 0, 0, 0.5);
+    background-blend-mode: darken;
+
+}
+.test1,.test2 {
+    margin-bottom: 30px;
+    font-size: 18px;
+    color: white;
+}
+.testGo {
+    display: flex;
+    width: 80px;
+    height: 18px;
+    padding: 7px 23px 7px 23px;
+    border: 1px solid #1AD8D3;
+    border-radius: 5px;
+    cursor: pointer;
+    justify-content: center;
+    align-items: center;
+    color:#1AD8D3;
+    font-size: 18px;
+    z-index:3;
+}
+/* room */
+.room {
+    background-image: url("/image/third-img.jpg");
+    background-color: rgba(0, 0, 0, 0.5);
+    background-blend-mode: darken;
+}
+.roomWord {
+    margin-bottom: 30px;
+    font-size: 20px;
+    color: white;
+}
+.room1,.room2,.room3 {
+    display: flex;
+    width: 180px;
+    height: 18px;
+    padding: 7px 23px 7px 23px;
+    margin-bottom: 20px;
+    border: 1px solid #1AD8D3;
+    border-radius: 5px;
+    cursor: pointer;
+    justify-content: center;
+    align-items: center;
+    color:#1AD8D3;
+    font-size: 18px;
+    z-index:3;
+}
+/* skill */
+.skill {
+    position: relative;
+    background-image: url("/image/15.jpg");
+    z-index: 1;
+    flex-direction: row;
+}
+.explore {
+    position: relative;
+    display: flex;
+    align-items: center;
+    background-image: url("/image/FE_white.png");
+    z-index: 1;
+    width: 336px;
+    height: 445px;
+}
+.tree {
+    position: relative;
+    background-image: url("/image/FE_white.png");
+    z-index: 1;
+    width: 336px;
+    height: 445px;
+}
+.explore img, .tree img{
+    width: 41px;
+    height: 42.5px;
+}
+p.title  {
+    font-size: 24px;
+    color: #1AD8D3;
+    margin-top: 25px;
+}
+.line {
+    color: #1AD8D3;
+    font-size: 20px;
+    margin-bottom: 25px;
+}
+.btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 18px;
+    width: 80px;
+    height: 24px;
+    padding: 7px 23px 7px 23px;
+    border:#1AD8D3 1px solid;
+    border-radius: 5px;
+    background-color:#1AD8D3;
+    color: white;
+    cursor: pointer;
+    margin-top: 50px;
+}
+.text {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+/* intro */
+.intro {
+    background-image: url("/image/five-img.jpg");
+    background-color: rgba(0, 0, 0, 0.5);
+    background-blend-mode: darken;
+}
+
+.introTitle {
+    font-size: 24px;
+    color: white;
+}
+.introLine {
+    color: white;
+    font-size: 20px;
+    margin-bottom: 25px;
+}
+.introText {
+    font-size: 18px;
+    color: white;
+    width: 580px;
+}
+.toTop {
+    height: 46px;
+    padding: 70px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.toTop img {
+    width: 36px;
+    height: 46px;
+}
+.footer {
+    height: 80px;
+    color: #3f3a3a;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    background-color: #ececec;
+    font-size: 13px;
+}
+.facebook img {
+    width: 30px;
+    height: 30px;
+}
+.Line img {
+    width: 30px;
+    height: 30px;
+}
+.phone {
+    display: flex;
+    flex-direction: row;
+}
+.number1,.mail1 {
+    color: #1AD8D3;
+    font-weight: bold;
+    margin-right: 10px;
+}
+.number2,.mail2 {
+    letter-spacing: .5rem;
+}
+.email,.social {
+    display: flex;
+    flex-direction: row;
+}
+.facebook {
+    margin-right: 10px;
+}
+
+/* RWD */
+/* 手機：螢幕寬度小於 767px (包含) 時 */
+@media screen and (max-width: 991px) {
+    a.item {
+        margin-right: 40px;
+    }
+    .navList {
+        margin-right: 100px;
+    }
+    .skill {
+        flex-direction: column;
+        height: 700px;
+    }
+    .explore,.tree {
+        width: 224px;
+        height: 336px;
+    }
+    p.title,.text {
+        font-size: 14px;
+        margin-top: 5px;
+    }
+    .line {
+        margin-bottom: 10px;
+    }
+    .btn {
+        width: 50px;
+        height: 19px;
+        font-size: 14px;
+        margin-top:10px
+    }
+    .introTitle {
+        font-size: 20px;
+    }
+    .introText {
+        width: 350px;
+        font-size: 14px;
+    }
+    .footer {
+        height: 160px;
+        padding: 10px;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        position: relative;
+    }
+    .contact,.phone,.email,.social {
+        margin: 10px;
+    }
+    .social {
+        position: absolute;
+        right: 5px;
+        bottom: 10px;
+    }
+    .number1,.mail1 {
+        margin-right: 20px;
+    }
+    .number2,.mail2 {
+        letter-spacing: .2rem;
+    }
+}
+
+/* 平板：螢幕寬度介於 768px 和 991px (包含) 之間時 */
+@media screen and (min-width: 768px) and (max-width: 991px) {
+    .introTitle {
+        font-size: 24px;
+    }
+    .introText {
+        font-size: 18px;
+    }
 }
