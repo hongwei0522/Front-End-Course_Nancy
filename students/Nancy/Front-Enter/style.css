@@ -1,3 +1,441 @@
-p {
-    color:red;
+* {
+    margin: 0;
+    padding: 0;
+}
+body {
+    margin-left: auto;
+    margin-right: auto;
+    font-family: "Noto Sans TC", "華康黑體", "微軟正黑體", arial, sans-serif;
+}
+.navbar {
+    position: fixed;
+    right: 0;
+    left: 0;
+    z-index: 1030;
+    height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content:space-between;
+    background-color: rgb(255, 255, 255,.5);
+    margin-top: -100px;
+}
+/* navbar */
+.logo {
+    transition: 1s;
+}
+.logo img {
+    height: 65px;
+    width: auto;
+    cursor: pointer;
+}
+.navList {
+    height: 100px;
+    display: flex;
+    align-items: center;
+    margin-right: 30px;
+}
+a.item {
+    text-decoration: none;
+    color: #808080;
+    margin-right: 60px;
+    transition: .3s;
+}
+.navList img {
+    height: 19px;
+    width: auto;
+    cursor: pointer;
+}
+/* search */
+.wrap {
+    position: absolute;
+    top: 100px;
+    height: 200px;
+    width: 100%; 
+    background-color: rgb(243, 243, 243);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    pointer-events: none; /* 避免影響點擊事件 */
+}
+ /* 顯示時的樣式 */
+ .wrap.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+.open {
+    opacity: 1;
+}
+.search {
+    display: flex;
+    justify-content: center;
+    height: 35px;
+    width: 50%;
+}
+.searchBar {
+    width: 80%;
+}
+input {
+    border-radius:5px 0 0 5px;
+    border: none;
+    padding-left: 5px;
+    outline:none;
+}
+.voiceBtn,.searchBtn {
+    border: none;
+    background-color: white;
+    
+}
+.searchBtn {
+    border-radius: 0 5px 5px 0;
+}
+.voiceBtn img,.searchBtn img {
+    width: 25px;
+    height: 28px;
+    cursor:pointer;
+}
+.searchText {
+    color:#1AD8D3;
+    letter-spacing: .3rem;
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+/* aside */
+.aside {
+    position: fixed;
+    right: 0;
+    bottom: 180px;
+    z-index: 0;
+    transition: 1s;
+    cursor: pointer;
+}
+.aside img {
+    width: 78px;
+    height: 69px;
+    opacity: .5;
+    
+}
+/* section */
+.container {
+    margin-top: 100px;
+    background-image: url("/image/key-visual.jpg");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    height: 580px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 10px;
+}
+.container img {
+    width: 20px;
+    height: 20px;
+    transform: rotate(90deg);
+}
+p.frontEnter {
+    margin-top: 150px;
+    font-size: 38px;
+    margin-bottom: 10px;
+    font-weight: bold;
+    color: white;
+}
+p.news {
+    font-size: 24px;
+    margin-bottom: 100px;
+    font-weight: bold;
+    color: white;
+}
+/* main */
+.service {
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    height: 580px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+.test {
+    background-image: url("/image/second-img.jpg");
+    background-color: rgba(0, 0, 0, 0.5);
+    background-blend-mode: darken;
+    background-attachment: fixed;
+    transition: 1s;
+}
+.testWord {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: 1s;
+}
+.test1,.test2 {
+    margin-bottom: 30px;
+    font-size: 18px;
+    color: white;
+}
+.testGo {
+    display: flex;
+    width: 80px;
+    height: 18px;
+    padding: 7px 23px 7px 23px;
+    border: 1px solid #1AD8D3;
+    border-radius: 5px;
+    cursor: pointer;
+    justify-content: center;
+    align-items: center;
+    color:#1AD8D3;
+    font-size: 18px;
+    z-index:3;
+    transition: 1s;
+}
+/* room */
+.room {
+    background-image: url("/image/third-img.jpg");
+    background-color: rgba(0, 0, 0, 0.5);
+    background-blend-mode: darken;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    transition: 1s;
+}
+.roomWord {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: 1s;
+}
+.roomText {
+    margin-bottom: 30px;
+    font-size: 20px;
+    color: white;
+}
+.room1,.room2,.room3 {
+    display: flex;
+    width: 180px;
+    height: 18px;
+    padding: 7px 23px 7px 23px;
+    margin-bottom: 20px;
+    border: 1px solid #1AD8D3;
+    border-radius: 5px;
+    cursor: pointer;
+    justify-content: center;
+    align-items: center;
+    color:#1AD8D3;
+    font-size: 18px;
+    z-index:3;
+    transition: 1s;
+}
+/* skill */
+.skill {
+    background-image: url("/image/15.jpg");
+    flex-direction: row;
+    background-attachment: fixed;
+    margin-bottom: 10px;
+    transition: 1s;
+}
+.skillWord {
+    display: flex;
+    align-items: center;
+    transition: 1s;
+}
+.explore {
+    display: flex;
+    align-items: center;
+    background-image: url("/image/FE_white.png");
+    width: 336px;
+    height: 445px;
+}
+.tree {
+    background-image: url("/image/FE_white.png");
+    width: 336px;
+    height: 445px;
+}
+.explore img, .tree img{
+    width: 41px;
+    height: 42.5px;
+}
+p.title  {
+    font-size: 24px;
+    color: #1AD8D3;
+    margin-top: 25px;
+}
+.line {
+    color: #1AD8D3;
+    font-size: 20px;
+    margin-bottom: 25px;
+}
+.btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 18px;
+    width: 80px;
+    height: 24px;
+    padding: 7px 23px 7px 23px;
+    border:#1AD8D3 1px solid;
+    border-radius: 5px;
+    background-color:#1AD8D3;
+    color: white;
+    cursor: pointer;
+    margin-top: 50px;
+}
+.text {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+/* intro */
+.intro {
+    background-image: url("/image/five-img.jpg");
+    background-color: rgba(0, 0, 0, 0.5);
+    background-blend-mode: darken;
+    margin-bottom: 10px;
+    background-size: 115%; /* 預設大小 */
+    transition: background-size 1s ease-in-out; /* 平滑變化 */
+    transition: 1s;
+}
+.introWord {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: 1s;
+}
+.introTitle {
+    font-size: 24px;
+    color: white;
+}
+.introLine {
+    color: white;
+    font-size: 20px;
+    margin-bottom: 25px;
+}
+.introText {
+    font-size: 18px;
+    color: white;
+    width: 580px;
+}
+.toTop {
+    height: 46px;
+    padding: 70px;
+    display: flex;
+    justify-content: center;
+    align-items: center;    
+}
+.toTop img {
+    width: 36px;
+    height: 46px;
+    transition: 1s;
+    cursor: pointer;
+}
+.footer {
+    height: 80px;
+    color: #3f3a3a;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    background-color: #ececec;
+    font-size: 13px;
+}
+.facebook a img,.Line a img {
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+}
+.phone {
+    display: flex;
+    flex-direction: row;
+}
+.number1,.mail1 {
+    color: #1AD8D3;
+    font-weight: bold;
+    margin-right: 10px;
+}
+.number2,.mail2 {
+    letter-spacing: .5rem;
+}
+.email,.social {
+    display: flex;
+    flex-direction: row;
+}
+.facebook,.Line {
+    margin-right: 10px;
+    
+}
+
+/* RWD */
+/* 手機：螢幕寬度小於 767px (包含) 時 */
+@media screen and (max-width: 991px) {
+    a.item {
+        margin-right: 30px;
+    }
+    .navList {
+        margin-right: 50px;
+    }
+    .skill {
+        height: 700px;
+    }
+    .skillWord {
+        flex-direction: column;
+    }
+    .explore,.tree {
+        width: 224px;
+        height: 336px;
+        /* box-shadow: 10px 5px 5px black; */
+    }
+    p.title,.text {
+        font-size: 14px;
+        margin-top: 5px;
+    }
+    .line {
+        margin-bottom: 10px;
+    }
+    .btn {
+        width: 50px;
+        height: 19px;
+        font-size: 14px;
+        margin-top:10px
+    }
+    .introTitle {
+        font-size: 20px;
+    }
+    .introText {
+        width: 350px;
+        font-size: 14px;
+    }
+    .footer {
+        height: 160px;
+        padding: 10px;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        position: relative;
+    }
+    .contact,.phone,.email,.social {
+        margin: 10px;
+    }
+    .social {
+        position: absolute;
+        right: 5px;
+        bottom: 10px;
+    }
+    .number1,.mail1 {
+        margin-right: 20px;
+    }
+    .number2,.mail2 {
+        letter-spacing: .2rem;
+    }
+
+}
+
+/* 平板：螢幕寬度介於 768px 和 991px (包含) 之間時 */
+@media screen and (min-width: 768px) and (max-width: 991px) {
+    .introTitle {
+        font-size: 24px;
+    }
+    .introText {
+        font-size: 18px;
+    }
 }

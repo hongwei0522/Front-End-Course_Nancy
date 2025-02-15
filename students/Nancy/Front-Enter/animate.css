@@ -1,0 +1,114 @@
+/* 開場動畫 */
+.pageLoading {
+    position: fixed;
+    width: 100%;
+    height: 120vh; /* 設定比視口高度多 20% 讓 1/5 的部分能藏在下方 */
+    background: linear-gradient(to bottom, #ececec 90%, #1AD8D3 10%);
+    transform: translateY(20vh);
+    left: 0;
+    top: -20vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: 0.5s 0.5s;
+    z-index: 2000;
+    animation: moveUp 1s ease-in-out 2s forwards;
+}
+@keyframes moveUp {
+    0% {
+        transform: translateY(0);
+    }
+    100% {
+        transform: translateY(-100%);
+    }
+}
+.pageLoading img {
+    display: inline-block; /* 讓 transform 生效 */
+    position: relative;
+    animation: moveLogo 2s ease-in-out forwards;
+}
+@keyframes moveLogo {
+    0% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(50px); /* 先往下移動 */
+    }
+    100% {
+      transform: translateY(-30px); /* 再往上超過原本位置 */
+    }
+  }
+@media screen and (max-width: 991px) {
+.pageLoading img {
+    top: -100px;
+    width: 300px;
+    height: 130px;
+}
+}
+/* hover動畫 */
+.frontEnter:hover {
+    transform: rotate(-10deg);
+}
+.container img {
+    animation: alawaysMoving .5s ease-in-out infinite;
+}
+@keyframes alawaysMoving {
+    0% {
+        transform: translateY(-5px) rotate(90deg);
+      }
+      50% {
+        transform: translateY(0px) rotate(90deg);
+      }
+      100% {
+        transform: translateY(-5px) rotate(90deg);
+      }
+}
+.aside:hover {
+    transform: translateY(-35px);
+    transition: 1s;
+}
+@keyframes moveItem {
+    0% {
+        transform: translateY(30px);
+    }
+    100% {
+        transform: translateY(0);
+    }
+}
+a.item,.navList img,.logo {
+    animation: moveItem 1s ease-in-out 2s forwards;
+    animation-fill-mode: none;
+}
+a.item:hover {
+    color:#1AD8D3;
+}
+.navList img:hover,
+.logo:hover,
+.testGo:hover,
+.room1:hover,
+.room2:hover,
+.room3:hover,
+.toTop img:hover {
+    transform: scale(1.2);
+    transition: transform 1s;
+}
+.btn:hover {
+    color:black;
+}
+.intro:hover {
+    background-size: 135%;
+}
+.test:hover .testWord,
+.room:hover .roomWord,
+.skill:hover .skillWord,
+.intro:hover .introWord {
+    transform: translateY(30px);
+    transition: 1s;
+}
+.test:hover,
+.room:hover,
+.skill:hover,
+.intro:hover {
+    height: 600px;
+    transition: 1s;
+}
