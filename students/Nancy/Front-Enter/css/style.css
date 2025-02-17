@@ -11,12 +11,12 @@ body {
     position: fixed;
     right: 0;
     left: 0;
-    z-index: 1030;
+    z-index: 2001;
     height: 100px;
     display: flex;
     align-items: center;
     justify-content:space-between;
-    background-color: rgb(255, 255, 255,.5);
+    background-color: rgb(255, 255, 255,.8);
     margin-top: -100px;
 }
 /* navbar */
@@ -47,7 +47,7 @@ a.item {
 }
 /* search */
 .wrap {
-    position: absolute;
+    position:fixed;
     top: 100px;
     height: 200px;
     width: 100%; 
@@ -58,10 +58,24 @@ a.item {
     align-items: center;
     opacity: 0;
     pointer-events: none; /* 避免影響點擊事件 */
+    z-index: 2000;
 }
  /* 顯示時的樣式 */
  .wrap.active {
     opacity: 1;
+    pointer-events: auto;
+}
+.searchDiv {
+    position: fixed;
+    bottom: 0;
+    width: 100%; 
+    min-height: 100%;
+    background-color:rgba(0, 0, 0, 0.8);
+    display: none;
+    z-index: 1999;
+}
+.searchDiv.active {
+    display: block;
     pointer-events: auto;
 }
 .open {
@@ -106,9 +120,9 @@ input {
     position: fixed;
     right: 0;
     bottom: 180px;
-    z-index: 0;
     transition: 1s;
     cursor: pointer;
+    z-index: 1000;
 }
 .aside img {
     width: 78px;
@@ -160,6 +174,14 @@ p.news {
     justify-content: center;
 }
 .test {
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    height: 580px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
     background-image: url("/image/second-img.jpg");
     background-color: rgba(0, 0, 0, 0.5);
     background-blend-mode: darken;
@@ -194,6 +216,15 @@ p.news {
 }
 /* room */
 .room {
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    height: 580px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
     background-image: url("/image/third-img.jpg");
     background-color: rgba(0, 0, 0, 0.5);
     background-blend-mode: darken;
@@ -230,6 +261,14 @@ p.news {
 }
 /* skill */
 .skill {
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    height: 580px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
     background-image: url("/image/15.jpg");
     flex-direction: row;
     background-attachment: fixed;
@@ -289,6 +328,15 @@ p.title  {
 }
 /* intro */
 .intro {
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    height: 580px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
     background-image: url("/image/five-img.jpg");
     background-color: rgba(0, 0, 0, 0.5);
     background-blend-mode: darken;
