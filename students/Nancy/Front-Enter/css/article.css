@@ -1,0 +1,154 @@
+/* carousel */
+.carousel {
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    height: 380px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: white; /* 讓 0.5 秒空白時顯示黑色 */
+    overflow: hidden;
+    margin-top: 100px;
+}
+.carousel img {
+    width: 100%;
+    height: 380px;
+    object-fit: cover;
+    position: absolute; /* 確保圖片堆疊，不會影響佈局 */
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+}
+.carousel img.active {
+    opacity: 1;
+}
+.carousel-text {
+    color: white;
+    font-size: 24px;
+    background-color: rgba(0, 0, 0, 0.5);
+    padding: 10px 20px;
+    border-radius: 10px;
+    letter-spacing: 0.5rem;
+    z-index: 10; /* 確保文字始終在圖片之上 */
+}
+/* nav */
+.nav {
+    width: 100%;
+    height: 70px;
+    box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2);
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+}
+.nav a {
+    font-size: 16px;
+    color:rgb(128, 128, 128);
+    text-decoration: none;
+    margin: 30px;
+    cursor: pointer;
+}
+main {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+.article {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 100px;
+}
+.card {
+    width: 300px;
+    height: 480px;
+    padding: 15px;
+    border: 1px solid rgb(26, 216, 211);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 5px;
+}
+.hidden {
+    display: none !important;
+}
+.card .uid {
+    display: none;
+}
+.site {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 10px;
+}
+.sitePic {
+    width: 17.14px;
+    height: 23.7px;
+    margin-right: 5px;
+}
+.site p {
+    font-size: 16px;
+    cursor: pointer;
+}
+.pic {
+    width: 200px;
+    height: 150px;
+    overflow: hidden;
+}
+.roomPic{
+    width: 200px;
+    height: 150px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: 1s;
+} 
+.card .title {
+    font-size: 26px;
+    color:rgb(26, 216, 211);
+    margin-bottom: 10px;
+    cursor: pointer;
+}
+.card .text {
+    font-size: 16px;
+    color:black;
+    margin-bottom: 15px;
+    cursor: pointer;
+    width: 240px;
+}
+.readMore {
+    display: flex;
+    justify-content: center;
+    align-items: baseline;
+    margin-top: 20px;
+}
+.readMore .read{
+    font-size: 16px;
+    color:rgb(26, 216, 211);
+    margin-right: 5px;
+}
+.readMore img {
+    width: 10px;
+    height: 10px;
+}
+
+/* 動畫部分 */
+.roomPic:hover {
+    transform: scale(1.5);
+    transition: 1s;
+}
+.card .title:hover {
+    color:rgb(124, 165, 151);
+}
+.card .text:hover {
+    color:rgb(124, 165, 151);
+}
+.readMore:hover .read {
+    transform: translateX(-5px);
+    transition: transform 0.5s;
+}
+
+.readMore:hover img {
+    transform: translateX(5px);
+    transition: transform 0.5s;
+    color:rgb(124, 165, 151);
+}
