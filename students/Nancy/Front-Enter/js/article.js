@@ -115,20 +115,27 @@ function roomBody(articles) {
         const Pic = document.createElement("div");
         Pic.classList.add("pic");
         
-        const RoomPic = document.createElement("img");
-        RoomPic.classList.add("roomPic");
-        RoomPic.setAttribute("src", obj.rectangleUrl);
+        const RoomPic = document.createElement("a");
+        RoomPic.setAttribute("href", `/content.html?id=${obj.creatTime}`);
         
-        const Title = document.createElement("p");
+        const RoomPicImg = document.createElement("img");
+        RoomPicImg.classList.add("roomPic");
+        RoomPicImg.setAttribute("src", obj.rectangleUrl);
+        RoomPic.appendChild(RoomPicImg);  // 將 img 放到 a 標籤裡
+        
+        const Title = document.createElement("a");
         Title.classList.add("title");
+        Title.setAttribute("href", `/content.html?id=${obj.creatTime}`);
         Title.textContent = obj.name;
         
-        const Text = document.createElement("p");
+        const Text = document.createElement("a");
         Text.classList.add("text");
+        Text.setAttribute("href", `/content.html?id=${obj.creatTime}`);
         Text.textContent = obj.preface;
         
-        const ReadMore = document.createElement("div");
+        const ReadMore = document.createElement("a");
         ReadMore.classList.add("readMore");
+        ReadMore.setAttribute("href", `/content.html?id=${obj.creatTime}`);
         
         const Read = document.createElement("p");
         Read.classList.add("read");
@@ -153,27 +160,34 @@ function roomBody(articles) {
         main.appendChild(Article);
     }
 }
+
 function filterCards(filterType, keyword) {
     const cards = document.querySelectorAll(".card");
-    
+    let hasVisibleCards = false; // 用來判斷是否有符合條件的卡片
+    const noResultsMessage = document.getElementById("noResults"); // 獲取顯示搜尋失敗的元素
+
     cards.forEach(card => {
-        // 每個 .card 都有可能具有多個 data-type 屬性，split(" ") 把多個類別拆分成陣列 ["小班制", "放養制"]，方便比對
         const types = card.dataset.type ? card.dataset.type.split(" ") : [];
-        // data-keywords 屬性存放文章的關鍵字，這樣可以讓搜尋框輸入 "台北" 時，也能找到這篇文章。
         const keywords = card.dataset.keywords || "";
-        // 條件 1： 如果 filterType 為空 ("")，代表沒有篩選類別，則 matchesType = true。
-        // 條件 2： 如果 filterType 有值，則判斷 types 陣列是否包含這個類別。
         const matchesType = !filterType || types.includes(filterType);
-        // 條件 1： 如果 keyword 為空 ("")，代表沒有輸入搜尋內容，則 matchesKeyword = true。
-        // 條件 2： 如果 keyword 有值，則檢查該關鍵字是否存在於 data-keywords 屬性內。
-        const matchesKeyword = !keyword || keywords.includes(keyword.toLowerCase());
+        const matchesKeyword = !keyword || keywords.toLowerCase().includes(keyword.toLowerCase());
+
         if (matchesType && matchesKeyword) {
             card.classList.remove("hidden");
+            hasVisibleCards = true; // 只要有一張符合條件的卡片，就設為 true
         } else {
             card.classList.add("hidden");
         }
     });
+
+    // 如果沒有任何符合條件的卡片，就顯示搜尋結果為空的提示
+    if (hasVisibleCards) {
+        noResultsMessage.classList.add("hidden");
+    } else {
+        noResultsMessage.classList.remove("hidden");
+    }
 }
+
 function getActiveFilterType() {
     const activeButton = document.querySelector(".nav a.active");
     return activeButton ? activeButton.dataset.type : "";
