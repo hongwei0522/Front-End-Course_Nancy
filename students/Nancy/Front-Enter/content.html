@@ -5,8 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/css/style.css">
     <link rel="stylesheet" href="/css/animate.css">
+    <link rel="stylesheet" href="/css/article.css">
+    <link rel="stylesheet" href="/css/content.css">
     <script src="/js/toTop.js"></script>
-    <title>Front-Enter - 前端轉職資訊</title>
+    <title>文章列表</title>
 </head>
 <body>
     <div class="navbar">
@@ -32,69 +34,67 @@
         <img src="./image/FE_test_go.png" alt="">
     </div>
     <section>
-        <div class="container">
-            <p class="frontEnter">FRONT-ENTER</p>
-            <p class="news">前端轉職資訊</p>
-            <img src="./image/next.svg" alt="">
+        <div class="carousel">
+            <img src="./image/room01.jpg" class="active" alt="圖片1">
+            <img src="./image/room02.jpg" alt="圖片2">
+            <img src="./image/room03.jpg" alt="圖片3">
+            <div class="carousel-text bInput"></div>
         </div>
     </section>
     <main>
-        <div class="test">
-            <div class="testWord">
-                <p class="test1">想知道自己適合什麼學習環境嗎？</p>
-                <p class="test2">可以點擊按鈕測測看哦！</p>
-                <div class="testGo">測驗GO</div>
-            </div>
+        <div class="left">
+            <img class="contentPic" src="./image/2.jpg" alt="">
+            <img class="contentPic" src="/image/13.jpg" alt="">
+            <img class="contentPic" src="./image/15.jpg" alt="">
+            <img class="contentPic" src="/image/7.jpg" alt="">
+            <img class="contentPic" src="./image/AppWorksShool-rectangle.jpg" alt="">
         </div>
-        <div class="room">
-            <div class="roomWord">
-                <p class="roomText">教室精選</p>
-                <a href="/content.html?id=1538646651342" class="room1">AppWorks School</a>
-                <a href="/content.html?id=1539507849063" class="room2">彭彭的課程教學</a>
-                <a href="/content.html?id=1539674167504" class="room3">五倍紅寶石</a>
+        <div class="right">
+            <div class="top">
+                <div class="topic bInput"></div>
+                <div class="content bInput"></div>
             </div>
-            
-        </div>
-        <div class="skill">
-            <div class="skillWord">
-                <div class="service explore">
-                    <img src="./image/FE_pen.png" alt="">
-                    <p class="title">探索</p>
-                    <div class="line">____</div>
-                    <div class="text">
-                        <p>
-                            我們提供公正的資訊，<br>
-                            幫您順利轉職，<br>
-                            並追蹤最新的業界動態。
-                        </p>
-                    </div>
-                    <a href="/article.html" class="btn">找學校</a>
+            <div class="bottom">
+                <div class="bTitle">
+                    整理
                 </div>
-                <div class="service tree">
-                    <img src="./image/FE_pen.png" alt="">
-                    <p class="title">技能樹</p>
-                    <div class="line">____</div>
-                    <div class="text">
-                        <p>
-                            前端包含哪些技術？<br>
-                            你又學會了哪些？<br>
-                            趕緊點進來試試看。
-                        </p>   
-                    </div>
-                    <a class="btn">技能樹</a>
+                <div class="bLine">
+                    __
                 </div>
-            </div>
-            
-        </div>
-        <div class="intro">
-            <div class="introWord">
-                <p class="introTitle">關於</p>
-            <div class="introLine">___</div>
-            <p class="introText">
-                近年來，社會對於軟體工程師的需求急速增加，全台各地的補習也如雨後春筍般開業， 然而人的時間有限，要如何找到適合自己的學習環境？<br>
-                <br>
-                「Front-Enter」特別針對前端工程的學習資源，進行蒐集、分類， 期待讓有志成為前端工程師的人，找到最適合自己的學習環境。
-            </p>
+                <div class="bText">
+                    <div class="bItem">
+                        <div class="bCLass">城市</div>
+                        <div class="bInput bWord"></div>
+                    </div>
+                    <div class="bItem">
+                        <div class="bCLass">班制</div>
+                        <div class="bInput bWord"></div>     
+                    </div>
+                    <div class="bItem">
+                        <div class="bCLass">教法</div>
+                        <div class="bInput bWord"></div>
+                    </div>
+                    <div class="bItem">
+                        <div class="bCLass">天數</div>
+                        <div class="bInput bWord"></div>
+                    </div>
+                    <div class="bItem">
+                        <div class="bCLass">週時</div>
+                        <div class="bInput bWord"></div>
+                    </div>
+                    <div class="bItem">
+                        <div class="bCLass">技術</div>
+                        <div class="bInput bWord"></div>
+                    </div>
+                    <div class="bItem">
+                        <div class="bCLass">信箱</div>
+                        <div class="bInput bWord"></div>
+                    </div>
+                    <div class="bItem">
+                        <div class="bCLass">電話</div>
+                        <div class="bInput bWord"></div>
+                    </div>
+                </div>
             </div>
         </div>
     </main>
@@ -133,6 +133,17 @@
         <img src="./image/FE_logo-4.png" alt="">
     </div>
     <div class="searchDiv"></div>
+    <div class="carouselRoom">
+        <div class="leftArrow"><img src="./image/left-arrow.png" alt=""></div>
+        <div class="slideRoom">
+            <img class="sliderPic" src="./image/2.jpg" alt="">
+            <img class="sliderPic" src="/image/13.jpg" alt="">
+            <img class="sliderPic" src="./image/15.jpg" alt="">
+            <img class="sliderPic" src="/image/7.jpg" alt="">
+            <img class="sliderPic" src="./image/AppWorksShool-rectangle.jpg" alt="">
+        </div>
+        <div class="rightArrow"><img src="./image/right-arrow.png" alt=""></div>
+    </div>
     <div class="testgoContainer">
         <div class="testgogo testStart">
             <p class="testTitle">測驗說明</p>
@@ -199,5 +210,8 @@
     </div>
 </body>
 <script src="/js/search.js"></script>
-<script src="/js/testGo.js"></script>
+<script src="/js/carousel.js"></script>
+<script src="/js/carouselRoom.js"></script>
+<script src="/js/content.js"></script>
+<script src="/js/testGo_content.js"></script>
 </html>

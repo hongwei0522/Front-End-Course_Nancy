@@ -49,6 +49,9 @@
     <main>
         
     </main>
+    <div class="noResult">
+        <div id="noResults" class="hidden">搜尋沒有東東 T_T</div>
+    </div>
     <div class="toTop">
         <img id="backToTop" src="./image/FE_TOP.png" alt="">
     </div>
@@ -84,8 +87,73 @@
         <img src="./image/FE_logo-4.png" alt="">
     </div>
     <div class="searchDiv"></div>
+    <div class="testgoContainer">
+        <div class="testgogo testStart">
+            <p class="testTitle">測驗說明</p>
+            <p class="testTest">點選「開始測驗」後，系統將根據你的回答，找出最適合你的學習環境，並顯示有多少百分比的合適度。</p>
+            <div class="Tbtn">開始測驗</div>
+        </div>
+        <div class="testgogo testFirst">
+            <p class="testWord">選擇在哪座城市學習？</p>
+            <p class="testWord">1/5</p>
+            <div class="Tbtns">
+                <div data-value="5" class="Tbtn">台北</div>
+                <div data-value="4" class="Tbtn">台中</div>
+                <div data-value="3" class="Tbtn">高雄</div>
+                <div data-value="2" class="Tbtn">各地</div>
+                <div data-value="1" class="Tbtn">不重要</div>
+            </div>
+        </div>
+        <div class="testgogo testSecond">
+            <p class="testWord">每月能撥出多少費用學習？</p>
+            <p class="testWord">2/5</p>
+            <div class="Tbtns">
+                <div data-value="5" class="Tbtn">3000元以下</div>
+                <div data-value="4" class="Tbtn">6000元內</div>
+                <div data-value="3" class="Tbtn">10000元內</div>
+                <div data-value="2" class="Tbtn">10001元以上</div>
+                <div data-value="1" class="Tbtn">不重要</div>
+            </div>
+        </div>
+        <div class="testgogo testThird">
+            <p class="testWord">每周能撥出多少時間學習？</p>
+            <p class="testWord">3/5</p>
+            <div class="Tbtns">
+                <div data-value="5" class="Tbtn">16小時以下</div>
+                <div data-value="4" class="Tbtn">30小時內</div>
+                <div data-value="3" class="Tbtn">45小時內</div>
+                <div data-value="2" class="Tbtn">46小時以上</div>
+                <div data-value="1" class="Tbtn">不重要</div>
+            </div>
+        </div>
+        <div class="testgogo testFourth">
+            <p class="testWord">對班制的需求是？</p>
+            <p class="testWord">4/5</p>
+            <div class="Tbtns">
+                <div data-value="5" class="Tbtn">大班制</div>
+                <div data-value="4" class="Tbtn">小班制</div>
+                <div data-value="3" class="Tbtn">一對一</div>
+                <div data-value="2" class="Tbtn">不重要</div>
+            </div>
+        </div>
+        <div class="testgogo testFifth">
+            <p class="testWord">喜歡什麼樣的教學方式？</p>
+            <p class="testWord">5/5</p>
+            <div class="Tbtns">
+                <div data-value="5" class="Tbtn">放養制</div>
+                <div data-value="4" class="Tbtn">手把手教制</div>
+                <div data-value="3" class="Tbtn">不重要</div>
+            </div>
+        </div>
+        <div class="testgogo testEnd">
+            <p class="testWord">你有多適合下列學校呢？</p>
+            <div class="circle"><div class="percent"></div></div>
+            <div class="Tbtn"></div>
+        </div>
+    </div>
 </body>
 <script src="/js/search.js"></script>
 <script src="/js/carousel.js"></script>
 <script src="/js/article.js"></script>
+<script src="/js/testGo.js"></script>
 </html>

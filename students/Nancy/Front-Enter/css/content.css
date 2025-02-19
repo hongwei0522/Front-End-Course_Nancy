@@ -1,0 +1,140 @@
+main {
+    margin: 100px;
+}
+.left {
+    display: flex;
+    flex:1;
+    flex-direction: column;
+    align-items: center;
+}
+.contentPic {
+    width: 400px;
+    height: 266px;
+    margin-bottom: 30px;
+    border-radius: 5px;
+    transition: 1s;
+    cursor: pointer;
+}
+.right {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex:2;
+}
+.top {
+    margin: 30px;
+}
+.topic {
+    font-size: 20px;
+    color: rgb(26, 216, 211);
+    text-align: left;
+    line-height: 8px;
+    font-weight: bold;
+    margin-bottom: 30px;
+}
+.content {
+    font-size: 16px;
+    color: rgb(128, 128, 128);
+    letter-spacing: .2rem;
+}
+.bWord {
+    font-size: 16px;
+    color: rgb(128, 128, 128);
+    letter-spacing: .2rem;
+    margin-left: 30px;
+}
+.bottom {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    padding: 50px;
+}
+.bTitle {
+    font-size: 18px;
+    text-align: center;
+    color: rgb(26, 216, 211);
+}
+.bLine {
+    color: rgb(26, 216, 211);
+    text-align: center;
+    margin-bottom: 30px;
+}
+.bText {
+    display: flex;
+    flex-direction: column;
+    font-size: 16px;
+    color:rgb(26, 216, 211);
+    text-align: left;
+    margin-left: 150px;
+    margin-right: 150px;
+}
+.bItem {
+    height: 60px;
+    border-bottom: 1px solid rgba(197, 197, 197, 0.8);
+    display: flex;
+    align-items: center
+}
+
+/* hover */
+.contentPic:hover {
+    transform: scale(1.1);
+    transition: 1s;
+}
+
+
+.carouselRoom {
+    position: fixed;
+    top: 0; 
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color:rgba(0, 0, 0, 0.8);
+    z-index: 2002;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    
+}
+.carouselRoom.show {
+    display: flex;
+    pointer-events: auto;
+}
+.sliderPic {
+    width: 750px;
+    height: 550px;
+}
+.leftArrow img,.rightArrow img{
+    width: 50px;
+    height: 50px;
+}
+/* RWD */
+/* 手機：螢幕寬度小於 767px (包含) 時 */
+@media screen and (max-width: 991px) {
+    main {
+        margin: 10px;
+        display: flex;
+        flex-direction: column;
+    }
+    .left img:not(:first-child) {
+        display: none;
+    }
+    .bText {
+        font-size: 12px;
+        margin-left: 50px;
+        margin-right: 50px;
+    }
+    .contentPic:hover {
+        transform: scale(1);
+        cursor: pointer;
+    }
+    .sliderPic {
+        width: 300px;
+        height: 300px;
+    }
+}
+/* 平板：螢幕寬度介於 768px 和 991px (包含) 之間時 */
+@media screen and (min-width: 768px) and (max-width: 1333px) {
+    .left img:not(:first-child) {
+        display: none;
+    }
+}
