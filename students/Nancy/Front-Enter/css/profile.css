@@ -15,7 +15,39 @@ main {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    height: 600px;
+}
+.personPage {
+    width: 80%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.likePage {
+    max-height: 100%;
+    width: 80%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+}
+.likePage .card {
+    width: 200px;
+    height: 250px;
+    border:none;
+    overflow: hidden;
+}
+.likePage .card img {
+    width: 200px;
+    height: 150px;
+    transform: scale(1);
+}
+.likePage .card .title {
+    font-size: 16px;
+}
+.likePage .card i:hover {
+    color:red;
+    cursor: pointer;
 }
 .profileBtn {
     width: 104px;
@@ -40,7 +72,7 @@ main {
     display: flex;
     flex-direction: column;
     justify-content: start;
-    width: 50%;
+    width: 90%;
 }
 .tItem {
     display: flex;
@@ -70,6 +102,11 @@ main {
 .editBtns.hidden {
     display: none !important;
 }
+.no-likes {
+    margin: 30px;
+    color:rgb(26, 216, 211);
+    font-weight: bold;
+}
 @media (max-width: 768px) {
     main {
       flex-direction: column-reverse;
@@ -82,9 +119,13 @@ main {
         padding-top: 30px;
         width: 400px;
     }
-    .right {
+    .right,.personPage {
         width: 400px;
         height: 600px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
     }
     .table {
         width: 80%;
@@ -102,8 +143,12 @@ main {
         width: 600px;
         justify-content: center;
     }
-    .right {
+    .right,.personPage {
         width: 600px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
     }
     .profile,.like,.loginOut {
         margin-left: 5px;
@@ -113,3 +158,4 @@ main {
         margin-top: 50px;
     }
 }
+

@@ -1,3 +1,5 @@
+import { renderCard } from './cardRenderer.js';
+
 document.addEventListener("DOMContentLoaded", function () {
     // 獲取 DOM 節點
     const buttons = document.querySelectorAll(".nav a"); // 篩選文章的導覽按鈕
@@ -91,48 +93,7 @@ function roomBody(articles) {
     main.innerHTML = ""; // 清空 main 內容
     
     articles.forEach(obj => {
-        const Article = document.createElement("div");
-        Article.classList.add("article");
-        
-        const Card = document.createElement("div");
-        Card.classList.add("card");
-        Card.setAttribute("data-type", obj.classType);
-        Card.setAttribute("data-keywords", `${obj.city} ${obj.name} ${obj.preface} ${obj.teachingMethod}`.toLowerCase());
-
-        const Site = document.createElement("div");
-        Site.classList.add("site");
-        
-        const SitePic = document.createElement("img");
-        SitePic.classList.add("sitePic");
-        SitePic.setAttribute("src", "./image/location_icon_one.png");
-        
-        const P1 = document.createElement("p");
-        P1.textContent = obj.city;
-
-        const Pic = document.createElement("div");
-        Pic.classList.add("pic");
-
-        const RoomPic = document.createElement("a");
-        RoomPic.setAttribute("href", `/content.html?id=${obj.creatTime}`);
-        
-        const RoomPicImg = document.createElement("img");
-        RoomPicImg.classList.add("roomPic");
-        RoomPicImg.setAttribute("src", obj.rectangleUrl);
-        RoomPic.appendChild(RoomPicImg);
-        
-        const Title = document.createElement("a");
-        Title.classList.add("title");
-        Title.setAttribute("href", `/content.html?id=${obj.creatTime}`);
-        Title.textContent = obj.name;
-        
-        Article.appendChild(Card);
-        Card.appendChild(Site);
-        Site.appendChild(SitePic);
-        Site.appendChild(P1);
-        Card.appendChild(Pic);
-        Pic.appendChild(RoomPic);
-        Card.appendChild(Title);
-        main.appendChild(Article);
+        renderCard(obj, main);
     });
 }
 

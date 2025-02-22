@@ -124,8 +124,11 @@ main {
         width: 70%;
         margin: 30px;
     }
-    .left img:not(:first-child) {
+    .contentLeft img:not(:first-child) {
         display: none;
+    }
+    .contentLeft {
+        margin-top: 30px;
     }
     .bText {
         font-size: 12px;
@@ -143,11 +146,14 @@ main {
 }
 /* 平板：螢幕寬度介於 768px 和 991px (包含) 之間時 */
 @media screen and (min-width: 768px) and (max-width: 1333px) {
-    .left img:not(:first-child) {
+    .contentLeft img:not(:first-child) {
         display: none;
         width: 100%;
     }
-    .right {
+    .contentLeft {
+        margin-top: 30px;
+    }
+    .contentRight {
         width: 100%;
     }
 }
