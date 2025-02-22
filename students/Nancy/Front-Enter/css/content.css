@@ -1,7 +1,7 @@
 main {
     margin: 100px;
 }
-.left {
+.contentLeft {
     display: flex;
     flex:1;
     flex-direction: column;
@@ -15,7 +15,7 @@ main {
     transition: 1s;
     cursor: pointer;
 }
-.right {
+.contentRight {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -102,10 +102,16 @@ main {
 .sliderPic {
     width: 750px;
     height: 550px;
+    display: none; /* 預設隱藏所有圖片 */
+}
+.sliderPic:first-child {
+    display: block; /* 預設顯示第一張圖片 */
 }
 .leftArrow img,.rightArrow img{
     width: 50px;
     height: 50px;
+    cursor: pointer;
+    z-index: 3000;
 }
 /* RWD */
 /* 手機：螢幕寬度小於 767px (包含) 時 */
@@ -113,7 +119,10 @@ main {
     main {
         margin: 10px;
         display: flex;
-        flex-direction: column;
+    }
+    .top {
+        width: 70%;
+        margin: 30px;
     }
     .left img:not(:first-child) {
         display: none;
@@ -136,5 +145,9 @@ main {
 @media screen and (min-width: 768px) and (max-width: 1333px) {
     .left img:not(:first-child) {
         display: none;
+        width: 100%;
+    }
+    .right {
+        width: 100%;
     }
 }

@@ -3,15 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="referrer" content="strict-origin-when-cross-origin">
-    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
     <link rel="stylesheet" href="/css/style.css">
     <link rel="stylesheet" href="/css/animate.css">
     <link rel="stylesheet" href="/css/article.css">
+    <link rel="stylesheet" href="/css/content.css">
     <link rel="stylesheet" href="/css/testGo.css">
     <link rel="stylesheet" href="/css/loginIn.css">
+    <link rel="stylesheet" href="/css/profile.css">
     <script src="/js/toTop.js"></script>
-    <title>文章列表</title>
+    <title>會員中心</title>
 </head>
 <body>
     <div class="navbar">
@@ -38,24 +38,42 @@
     </div>
     <section>
         <div class="carousel">
-            <img src="./image/room01.jpg" class="active" alt="圖片1">
-            <img src="./image/room02.jpg" alt="圖片2">
-            <img src="./image/room03.jpg" alt="圖片3">
-            <div class="carousel-text">蒐羅前端學校</div>
+            <img src="./image/profile01.jpg" class="active" alt="圖片1">
+            <img src="./image/profile02.jpg" alt="圖片2">
+            <img src="./image/profile04.jpg" alt="圖片3">
+            <div class="carousel-text bInput">會員中心</div>
         </div>
     </section>
-    <div class="nav">
-        <a href="" class="allClass">全部</a>
-        <a href="" class="smallClass" data-type="小班制">小班制</a>
-        <a href="" class="byYourSelf" data-type="放養制">放養制</a>
-        <a href="" class="oneByOne" data-type="一對一">一對一</a>
-    </div>
     <main>
-        
+        <div class="left">
+            <div class="profileBtn profile">個人資料</div>
+            <div class="profileBtn like">收藏</div>
+            <div class="profileBtn loginOut">登出</div>
+        </div>
+        <div class="right">
+            <div class="personPic"></div>
+            <div class="table">
+                <div class="tItem">
+                    <div class="tTitle ">姓名</div>
+                    <input class="tInput tName" type="text">
+                </div>
+                <div class="tItem">
+                    <div class="tTitle ">手機</div>
+                    <input class="tInput tPhone" type="text">     
+                </div>
+                <div class="tItem">
+                    <div class="tTitle ">信箱</div>
+                    <input class="tInput tMail" type="text">
+                </div>
+            </div>
+            <div class="profileBtn edit">修改資料</div>
+            <div class="editBtns hidden">
+                <div class="profileBtn ensure">確認</div>
+                <div class="profileBtn cancel">取消</div>
+            </div>
+            
+        </div>
     </main>
-    <div class="noResult">
-        <div id="noResults" class="hidden">搜尋沒有東東 T_T</div>
-    </div>
     <div class="toTop">
         <img id="backToTop" src="./image/FE_TOP.png" alt="">
     </div>
@@ -155,29 +173,11 @@
             <div class="Tbtn"></div>
         </div>
     </div>
-    <div class="loginContainer">
-        <div class="loginLogo">
-            <img src="./image/FE_logo-2.png" alt="">
-        </div>
-        <div class="loginInput">
-            <input class="inputEmail" type="text" placeholder="Email">
-            <input class="inputPassword" placeholder="******" type="password" autocomplete="new-password">
-        </div>
-        <div class="forgetPass"><p>忘記密碼？</p></div>
-        <div class="loginNormal">
-            <div class="registerIn">註冊</div>
-            <div class="loginIn">登入</div>
-        </div> 
-        <div class="loginGmail">
-            <div id="googleLoginBtn" class="loginInGmail">Log In With Gmail</div>
-        </div>
-    </div>
     <script type="module" src="/js/firebase.js"></script>
     <script type="module" src="/js/firebase-db.js"></script>
     <script src="/js/search.js"></script>
     <script src="/js/carousel.js"></script>
-    <script src="/js/article.js"></script>
-    <script src="/js/testGo.js"></script>
+    <script src="/js/testGo_content.js"></script>
 </body>
 
 </html>

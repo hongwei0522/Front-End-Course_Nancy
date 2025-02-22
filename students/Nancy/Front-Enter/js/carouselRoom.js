@@ -3,45 +3,67 @@ const carouselImages = document.querySelectorAll(".sliderPic");
 const left = document.querySelector(".leftArrow");
 const right = document.querySelector(".rightArrow");
 const carouselRoom = document.querySelector(".carouselRoom");
-const slideRoom = document.querySelector(".slideRoom")
+const slideRoom = document.querySelector(".slideRoom");
 let index = 0;
 
-// 初始化顯示第一張圖片
-function updateImage() {
-    if (!carouselImages[index]) return; // 確保 index 不會超出範圍
+// 直接操作 DOM 顯示/隱藏圖片
+function showImage(index) {    
+    // 確保所有圖片都隱藏
     carouselImages.forEach((img, i) => {
-        img.style.display = i === index ? "block" : "none";
+        if (i === index) {
+            img.style.cssText = "display: block; opacity: 1;";
+        } else {
+            img.style.cssText = "display: none; opacity: 0;";
+        }
     });
 }
 
-// 左箭頭點擊事件
-left.addEventListener("click", function () {
-    index = (index - 1 + carouselImages.length) % carouselImages.length; // 確保不會變成負數
-    updateImage();
-});
-
-// 右箭頭點擊事件
-right.addEventListener("click", function () {
+// 處理左箭頭點擊
+left.onclick = function(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    // 更新索引
+    index = (index - 1 + carouselImages.length) % carouselImages.length;
+    // 顯示新圖片
+    showImage(index);
+};
+// 處理右箭頭點擊
+right.onclick = function(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    // 更新索引
     index = (index + 1) % carouselImages.length;
-    updateImage();
-});
+    // 顯示新圖片
+    showImage(index);
+};
 
-// 初始化圖片顯示
-updateImage();
-
+// 切換輪播器顯示
 function toggleCarouselRoom(event) {
-    event.stopPropagation(); // 防止事件冒泡
+    event.stopPropagation();
     carouselRoom.classList.toggle('show');
+    // 每次開啟時重置並顯示第一張圖片
+    index = 0;
+    showImage(index);
 }
-
-// 點擊搜尋按鈕時，切換搜尋視窗
-RoomImages.forEach(image => {
-    image.addEventListener('click', toggleCarouselRoom);
+// 縮圖點擊事件
+RoomImages.forEach((image, i) => {
+    image.onclick = function(e) {
+        e.preventDefault();
+        toggleCarouselRoom(e);
+        index = i;
+        showImage(index);
+    };
 });
-
-// 點擊其他地方時，關閉搜尋視窗
-document.addEventListener('click', function (event) {
-    if (!slideRoom.contains(event.target)&& !left.contains(event.target)&& !right.contains(event.target)) {
+// 點擊外部關閉
+document.addEventListener('click', function(e) {
+    if (!slideRoom.contains(e.target) && 
+        !left.contains(e.target) && 
+        !right.contains(e.target)) {
         carouselRoom.classList.remove('show');
     }
+});
+// 初始化
+document.addEventListener('DOMContentLoaded', function() {
+    console.log("初始化輪播圖");
+    showImage(index);
 });

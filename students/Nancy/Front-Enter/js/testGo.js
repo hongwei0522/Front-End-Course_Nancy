@@ -1,6 +1,7 @@
 const Aside = document.querySelector(".aside"); // 側邊欄按鈕
 const TestGoContainer = document.querySelector(".testgoContainer"); // 整個測驗容器
 const TestGogo = document.querySelectorAll(".testgogo"); // 每個測驗題目(圖片)
+const TestGo = document.querySelector(".testGo"); // 首頁按鈕
 const Tbtns = document.querySelectorAll(".Tbtn"); // 每個題目中的按鈕 (前進到下一題)
 const testEndBtn = document.querySelector(".testEnd .Tbtn"); // 測驗結束頁面的按鈕
 const percent = document.querySelector(".percent"); //百分比數字
@@ -22,6 +23,7 @@ const schoolsData = [
 
 // 更新顯示的圖片
 function updateImage() {
+    // 這是一個條件判斷，i 是當前 forEach 迴圈中的索引值，而 index 是外部變數。
     TestGogo.forEach((img, i) => {
         img.style.display = i === index ? "block" : "none"; // 顯示目前索引的圖片
     });
@@ -39,7 +41,7 @@ function calculateSimilarity(arr1, arr2) {
 // 尋找最適合的學校
 function findMostSuitableSchool(userAnswers) {
     let bestSchool = null;
-    let maxSimilarity = -1;
+    let maxSimilarity = -1; //確保第一個學校一定會更新最大相似度
     schoolsData.forEach(school => {
         const similarity = calculateSimilarity(userAnswers, school.scores); // 計算相似度
         console.log(userAnswers);
@@ -57,23 +59,23 @@ function calculateSuitabilityPercentage(userAnswers) {
     const totalPossibleScore = userAnswers.length * 5; // 每個問題最高分是 5
     const userScore = userAnswers.reduce((sum, score) => sum + score, 0); // 使用者總分
     let percentage = (userScore / totalPossibleScore) * 100; // 原始百分比
-    percentage = Math.min(percentage, 100); // 限制最高 100%
+    percentage = Math.min(percentage, 100); // 限制最高 100%，確保 不超過 100%（防止意外超過最大值）
     return percentage;
 }
 
 // 為每個問題的答案按鈕添加事件監聽器
 TestGogo.forEach((testGo, questionIndex) => {
-    const answerButtons = testGo.querySelectorAll(".Tbtn"); // 選擇答案按鈕 (您需要確保您的按鈕有這個 class)
+    const answerButtons = testGo.querySelectorAll(".Tbtn"); // 選擇答案按鈕
     answerButtons.forEach(button => {
         button.addEventListener("click", function (event) {
             event.preventDefault(); // 阻止按鈕或連結的默認行為
             event.stopPropagation(); // 防止影響到 document 監聽
-            let answerValue = parseInt(button.dataset.value); 
+            let answerValue = parseInt(button.dataset.value);  // 將"3"字串轉換為3數字
             if (isNaN(answerValue)) {
                 answerValue = 0; // 若 data-value 解析後為 NaN，則視為 0
             }
             userAnswers[questionIndex] = answerValue; // 儲存答案
-            index = (index + 1) % TestGogo.length; // 移動到下一題
+            index = (index + 1) % TestGogo.length; // 移動到下一題，使用 %（模運算）確保索引不會超過陣列長度。（因為 7 % 7 = 0，回到第一題）
             updateImage(); // 更新圖片
 
             // 如果是最後一題，計算結果
@@ -105,22 +107,34 @@ TestGogo.forEach((testGo, questionIndex) => {
     });    
 });
 
-// 監聽 Aside 點擊事件，開啟/關閉 TestGoContainer，並顯示第一張圖片
-Aside.addEventListener("click", function (event) {
-    event.stopPropagation(); // 防止冒泡影響到 document 監聽
-    if (!TestGoContainer.classList.contains('show')) { // 確認如果目前是隱藏才做顯示
-        TestGoContainer.classList.add('show');
-    } else {
-        TestGoContainer.classList.remove('show'); // 如果已經顯示就關閉
-    }
-    updateImage(); // 顯示第一張圖片
-    index = 0; // 重置到第一張圖片
-    userAnswers = []; // 清空之前的答案
-});
-
-// 點擊其他地方時關閉 TestGoContainer
+// 監聽 Aside 點擊事件，開啟/關閉 TestGoContainer
+if (Aside) {
+    Aside.addEventListener("click", function (event) {
+        event.stopPropagation(); // 防止冒泡影響到 document 監聽
+        toggleTestContainer();
+    });
+}
+if (TestGo) {
+    TestGo.addEventListener("click", function (event) {
+        event.stopPropagation(); // 防止冒泡影響到 document 監聽
+        toggleTestContainer();
+    });
+}
+// 監聽 document 點擊事件，關閉 TestGoContainer
 document.addEventListener("click", function (event) {
     if (!TestGoContainer.contains(event.target) && !Aside.contains(event.target)) {
         TestGoContainer.classList.remove('show'); // 隱藏 TestGoContainer
     }
 });
+
+// 切換測驗容器顯示狀態的函數
+function toggleTestContainer() {
+    if (!TestGoContainer.classList.contains('show')) {
+        TestGoContainer.classList.add('show');
+        updateImage(); // 顯示第一張圖片
+        index = 0; // 重置到第一張圖片
+        userAnswers = []; // 清空之前的答案
+    } else {
+        TestGoContainer.classList.remove('show');
+    }
+}

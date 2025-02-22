@@ -1,0 +1,115 @@
+main {
+    justify-content: space-evenly;
+}
+.left {
+    flex:1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 600px;
+}
+.right {
+    flex:2;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 600px;
+}
+.profileBtn {
+    width: 104px;
+    height: 40px;
+    background-color: rgb(26, 216, 211);
+    color: white;
+    border-radius: 5px;
+    font-size: 16px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 30px;
+    cursor: pointer;
+}
+.personPic{
+    border-radius: 50%;
+    margin-bottom: 10px;
+}
+.table {
+    margin-top: 30px;
+    margin-bottom: 30px;
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    width: 50%;
+}
+.tItem {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 30px;
+}
+.tTitle {
+    color: rgb(158, 158, 158);
+    font-size: 16px;
+}
+.tInput {
+    color: rgb(128, 128, 128);
+    font-size: 16px;
+    border: 0px solid black;
+    outline: none;
+
+}
+.editBtns {
+    display: flex;
+    margin: 10px;
+    justify-content: center;
+    align-items: center;
+}
+.ensure,.cancel {
+    margin: 30px;
+}
+.editBtns.hidden {
+    display: none !important;
+}
+@media (max-width: 768px) {
+    main {
+      flex-direction: column-reverse;
+    }
+    .personPic {
+        margin-top: 50px;
+    }
+    .left {
+        border-top: 1px solid rgb(204, 204, 204);
+        padding-top: 30px;
+        width: 400px;
+    }
+    .right {
+        width: 400px;
+        height: 600px;
+    }
+    .table {
+        width: 80%;
+    }
+}
+/* 平板：螢幕寬度介於 768px 和 991px (包含) 之間時 */
+@media screen and (min-width: 768px) and (max-width: 991px) {
+    main {
+        flex-direction: column-reverse;
+      }
+    .left {
+        border-top: 1px solid rgb(204, 204, 204);
+        padding-top: 30px;
+        flex-direction:row;
+        width: 600px;
+        justify-content: center;
+    }
+    .right {
+        width: 600px;
+    }
+    .profile,.like,.loginOut {
+        margin-left: 5px;
+        margin-right: 5px;
+    }
+    .personPic {
+        margin-top: 50px;
+    }
+}

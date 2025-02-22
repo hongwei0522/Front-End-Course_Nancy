@@ -1,43 +1,46 @@
 document.addEventListener("DOMContentLoaded", function () {
-    // 獲取DOM節點
-    const buttons = document.querySelectorAll(".nav a");
-    const searchInput = document.querySelector(".searchBar");
-    const searchBtn = document.querySelector(".searchBtn");
-    const wrap = document.querySelector(".wrap");
-    const overlay = document.querySelector(".searchDiv");
-    const micBtn = document.querySelector(".voiceBtn");
-    // 在使用者輸入搜尋內容，並按下ENTER或按鈕時，會觸發關閉搜尋視窗及黑色遮幕
+    // 獲取 DOM 節點
+    const buttons = document.querySelectorAll(".nav a"); // 篩選文章的導覽按鈕
+    const searchInput = document.querySelector(".searchBar"); // 搜尋輸入框
+    const searchBtn = document.querySelector(".searchBtn"); // 搜尋按鈕
+    const wrap = document.querySelector(".wrap"); // 搜尋畫面外部容器
+    const overlay = document.querySelector(".searchDiv"); // 搜尋遮罩層
+    const micBtn = document.querySelector(".voiceBtn"); // 語音輸入按鈕
+
+    // 在使用者輸入搜尋內容後，按下 ENTER 或搜尋按鈕時，關閉搜尋視窗與遮罩
     function hideSearchBox() {
-        searchInput.value = "";
-        overlay.classList.remove('active');
-        wrap.classList.remove('active');   
+        searchInput.value = ""; // 清空輸入框內容
+        overlay.classList.remove('active'); // 隱藏遮罩層
+        wrap.classList.remove('active'); // 隱藏搜尋框
     }
-    // 讓main依照JSON的classType渲染出特定data-type的文章
+
+    // 讓 main 依照 JSON 的 classType 渲染出特定 data-type 的文章
     buttons.forEach(button => {
         button.addEventListener("click", function (event) {
-            //防止點擊 `<a>` 時頁面跳轉
-            event.preventDefault();
-            // 取得按鈕的data-type值
-            const filterType = this.dataset.type;
-            // 延遲 500 毫秒執行，這樣可以讓篩選的動畫效果更流暢，避免按鈕點擊時畫面閃爍。
+            event.preventDefault(); // 防止點擊 <a> 時頁面跳轉
+            const filterType = this.dataset.type; // 取得按鈕的 data-type
             setTimeout(() => {
-                filterCards(filterType, searchInput.value.trim());
+                filterCards(filterType, searchInput.value.trim()); // 延遲 500ms 避免畫面閃爍
             }, 500);
         });
     });
-    // 在使用者按下ENTER或按鈕時觸發
+
+    // 處理搜尋功能
     function handleSearch() {
-        filterCards(getActiveFilterType(), searchInput.value.trim());
-        hideSearchBox();
+        filterCards(getActiveFilterType(), searchInput.value.trim()); // 根據輸入內容篩選文章
+        hideSearchBox(); // 搜尋後關閉搜尋框
     }
-    // 搜尋按鈕監聽：只要使用者按下按鈕，就觸發handleSearch
+
+    // 監聽搜尋按鈕點擊事件
     searchBtn.addEventListener("click", handleSearch);
-    // 搜尋框監聽：只要使用者按下ENTER，就觸發handleSearch
+
+    // 監聽搜尋框的 Enter 鍵事件
     searchInput.addEventListener("keypress", function (event) {
         if (event.key === "Enter") {
             handleSearch();
         }
     });
+
     // 語音辨識功能
     function startSpeechRecognition() {
         if (!("webkitSpeechRecognition" in window)) {
@@ -52,45 +55,42 @@ document.addEventListener("DOMContentLoaded", function () {
         recognition.start();
     
         recognition.onstart = function () {
-            console.log("語音辨識開始...");
-            micBtn.classList.add("listening");
+            micBtn.classList.add("listening"); // 標記麥克風正在接收語音輸入
         };
         recognition.onresult = function (event) {
             const transcript = event.results[0][0].transcript;
-            searchInput.value = transcript; // 設定搜尋框的值
-            console.log("辨識結果: ", transcript);
-            // 延遲 2 秒後執行搜尋
+            searchInput.value = transcript; // 將語音轉換的文字填入搜尋框
             setTimeout(() => {
-                handleSearch(); // 直接執行搜尋
+                handleSearch(); // 延遲 2 秒後執行搜尋
             }, 2000);
         };
         recognition.onerror = function (event) {
             console.error("語音辨識錯誤: ", event.error);
         };
         recognition.onend = function () {
-            console.log("語音辨識結束");
-            micBtn.classList.remove("listening");
+            micBtn.classList.remove("listening"); // 移除語音辨識標記
         };
     }
-    // 語音按鈕監聽：只要使用者按下按鈕，就觸發startSpeechRecognition語音辨識功能
+
+    // 監聽語音按鈕點擊事件
     micBtn.addEventListener("click", startSpeechRecognition);
-    
 });
-// 透過非同步async/await串接JSON
+
+// 透過非同步函式載入 JSON 檔案
 async function room() {
     const requestURL = "front-enter-export.json";
-    const request = new Request(requestURL);
-    const response = await fetch(request);
+    const response = await fetch(requestURL);
     const articleDatas = await response.json();
     const articles = Object.values(articleDatas.article);
-    roomBody(articles);
+    roomBody(articles); // 渲染文章內容
 }
-// 串接JSON並渲染出九個文章
+
+// 渲染文章內容
 function roomBody(articles) {
     const main = document.querySelector("main");
-    main.innerHTML = ""; 
+    main.innerHTML = ""; // 清空 main 內容
     
-    for (const obj of articles) {
+    articles.forEach(obj => {
         const Article = document.createElement("div");
         Article.classList.add("article");
         
@@ -99,9 +99,6 @@ function roomBody(articles) {
         Card.setAttribute("data-type", obj.classType);
         Card.setAttribute("data-keywords", `${obj.city} ${obj.name} ${obj.preface} ${obj.teachingMethod}`.toLowerCase());
 
-        const Id = document.createElement("div");
-        Id.id = obj.uid;
-        
         const Site = document.createElement("div");
         Site.classList.add("site");
         
@@ -111,85 +108,67 @@ function roomBody(articles) {
         
         const P1 = document.createElement("p");
         P1.textContent = obj.city;
-        
+
         const Pic = document.createElement("div");
         Pic.classList.add("pic");
-        
+
         const RoomPic = document.createElement("a");
         RoomPic.setAttribute("href", `/content.html?id=${obj.creatTime}`);
         
         const RoomPicImg = document.createElement("img");
         RoomPicImg.classList.add("roomPic");
         RoomPicImg.setAttribute("src", obj.rectangleUrl);
-        RoomPic.appendChild(RoomPicImg);  // 將 img 放到 a 標籤裡
+        RoomPic.appendChild(RoomPicImg);
         
         const Title = document.createElement("a");
         Title.classList.add("title");
         Title.setAttribute("href", `/content.html?id=${obj.creatTime}`);
         Title.textContent = obj.name;
         
-        const Text = document.createElement("a");
-        Text.classList.add("text");
-        Text.setAttribute("href", `/content.html?id=${obj.creatTime}`);
-        Text.textContent = obj.preface;
-        
-        const ReadMore = document.createElement("a");
-        ReadMore.classList.add("readMore");
-        ReadMore.setAttribute("href", `/content.html?id=${obj.creatTime}`);
-        
-        const Read = document.createElement("p");
-        Read.classList.add("read");
-        Read.textContent = "read more";
-        
-        const Img1 = document.createElement("img");
-        Img1.setAttribute("src", "./image/arrow-right-one.png");
-        
         Article.appendChild(Card);
-        Card.appendChild(Id);
         Card.appendChild(Site);
         Site.appendChild(SitePic);
         Site.appendChild(P1);
         Card.appendChild(Pic);
         Pic.appendChild(RoomPic);
         Card.appendChild(Title);
-        Card.appendChild(Text);
-        Card.appendChild(ReadMore);
-        ReadMore.appendChild(Read);
-        ReadMore.appendChild(Img1);
-        
         main.appendChild(Article);
-    }
+    });
 }
 
+// 篩選文章內容
 function filterCards(filterType, keyword) {
     const cards = document.querySelectorAll(".card");
-    let hasVisibleCards = false; // 用來判斷是否有符合條件的卡片
-    const noResultsMessage = document.getElementById("noResults"); // 獲取顯示搜尋失敗的元素
+     // 設定一個變數來檢查是否有符合條件的卡片
+    let hasVisibleCards = false;
+    const noResultsMessage = document.getElementById("noResults");
 
     cards.forEach(card => {
+        // 從 data-type 屬性獲取類型，可能包含多個類型（字串）
         const types = card.dataset.type ? card.dataset.type.split(" ") : [];
+        // 從 data-keywords 屬性獲取所有關鍵字
         const keywords = card.dataset.keywords || "";
+        // 檢查當前卡片的類型是否符合篩選條件
         const matchesType = !filterType || types.includes(filterType);
+        // 檢查當前卡片的關鍵字是否包含搜尋關鍵字
         const matchesKeyword = !keyword || keywords.toLowerCase().includes(keyword.toLowerCase());
 
         if (matchesType && matchesKeyword) {
             card.classList.remove("hidden");
-            hasVisibleCards = true; // 只要有一張符合條件的卡片，就設為 true
+            hasVisibleCards = true;
         } else {
             card.classList.add("hidden");
         }
     });
-
-    // 如果沒有任何符合條件的卡片，就顯示搜尋結果為空的提示
-    if (hasVisibleCards) {
-        noResultsMessage.classList.add("hidden");
-    } else {
-        noResultsMessage.classList.remove("hidden");
-    }
+    
+    noResultsMessage.classList.toggle("hidden", hasVisibleCards);
 }
 
+// 取得當前選取的篩選類型
 function getActiveFilterType() {
     const activeButton = document.querySelector(".nav a.active");
     return activeButton ? activeButton.dataset.type : "";
 }
+
+// 載入文章
 room();

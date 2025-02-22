@@ -3,12 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="referrer" content="strict-origin-when-cross-origin">
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
     <link rel="stylesheet" href="/css/style.css">
     <link rel="stylesheet" href="/css/animate.css">
     <link rel="stylesheet" href="/css/article.css">
     <link rel="stylesheet" href="/css/content.css">
+    <link rel="stylesheet" href="/css/testGo.css">
+    <link rel="stylesheet" href="/css/loginIn.css">
     <script src="/js/toTop.js"></script>
-    <title>文章列表</title>
+    <title>文章內容</title>
 </head>
 <body>
     <div class="navbar">
@@ -18,7 +22,7 @@
         <div class="navList">
             <a href="article.html" class="item">探索</a>
             <a href="" class="item">技能樹</a>
-            <a href="" class="item">登入</a>
+            <a class="item profileitem"></a>
             <img class="navSearch" src="./image/FE_search_green.png" alt="">
         </div>
     </div>
@@ -42,14 +46,14 @@
         </div>
     </section>
     <main>
-        <div class="left">
+        <div class="contentLeft">
             <img class="contentPic" src="./image/2.jpg" alt="">
             <img class="contentPic" src="/image/13.jpg" alt="">
             <img class="contentPic" src="./image/15.jpg" alt="">
             <img class="contentPic" src="/image/7.jpg" alt="">
             <img class="contentPic" src="./image/AppWorksShool-rectangle.jpg" alt="">
         </div>
-        <div class="right">
+        <div class="contentRight">
             <div class="top">
                 <div class="topic bInput"></div>
                 <div class="content bInput"></div>
@@ -208,10 +212,30 @@
             <div class="Tbtn"></div>
         </div>
     </div>
-</body>
-<script src="/js/search.js"></script>
+    <div class="loginContainer">
+        <div class="loginLogo">
+            <img src="./image/FE_logo-2.png" alt="">
+        </div>
+        <div class="loginInput">
+            <input class="inputEmail" type="text" placeholder="Email">
+            <input class="inputPassword" placeholder="******" type="password" autocomplete="new-password">
+        </div>
+        <div class="forgetPass"><p>忘記密碼？</p></div>
+        <div class="loginNormal">
+            <div class="registerIn">註冊</div>
+            <div class="loginIn">登入</div>
+        </div> 
+        <div class="loginGmail">
+            <div id="googleLoginBtn" class="loginInGmail">Log In With Gmail</div>
+        </div>
+     
+    </div>
+    <script type="module" src="/js/firebase.js"></script>
+    <script type="module" src="/js/firebase-db.js"></script>
+    <script src="/js/search.js"></script>
 <script src="/js/carousel.js"></script>
 <script src="/js/carouselRoom.js"></script>
 <script src="/js/content.js"></script>
 <script src="/js/testGo_content.js"></script>
+</body>
 </html>
