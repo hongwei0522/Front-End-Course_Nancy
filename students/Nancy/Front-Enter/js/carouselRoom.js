@@ -1,0 +1,69 @@
+const RoomImages = document.querySelectorAll(".contentPic");
+const carouselImages = document.querySelectorAll(".sliderPic");
+const left = document.querySelector(".leftArrow");
+const right = document.querySelector(".rightArrow");
+const carouselRoom = document.querySelector(".carouselRoom");
+const slideRoom = document.querySelector(".slideRoom");
+let index = 0;
+
+// 直接操作 DOM 顯示/隱藏圖片
+function showImage(index) {    
+    // 確保所有圖片都隱藏
+    carouselImages.forEach((img, i) => {
+        if (i === index) {
+            img.style.cssText = "display: block; opacity: 1;";
+        } else {
+            img.style.cssText = "display: none; opacity: 0;";
+        }
+    });
+}
+
+// 處理左箭頭點擊
+left.onclick = function(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    // 更新索引
+    index = (index - 1 + carouselImages.length) % carouselImages.length;
+    // 顯示新圖片
+    showImage(index);
+};
+// 處理右箭頭點擊
+right.onclick = function(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    // 更新索引
+    index = (index + 1) % carouselImages.length;
+    // 顯示新圖片
+    showImage(index);
+};
+
+// 切換輪播器顯示
+function toggleCarouselRoom(event) {
+    event.stopPropagation();
+    carouselRoom.classList.toggle('show');
+    // 每次開啟時重置並顯示第一張圖片
+    index = 0;
+    showImage(index);
+}
+// 縮圖點擊事件
+RoomImages.forEach((image, i) => {
+    image.onclick = function(e) {
+        e.preventDefault();
+        toggleCarouselRoom(e);
+        index = i;
+        showImage(index);
+    };
+});
+// 點擊外部關閉
+document.addEventListener('click', function(e) {
+    if (!slideRoom.contains(e.target) && 
+        !left.contains(e.target) && 
+        !right.contains(e.target)) {
+        carouselRoom.classList.remove('show');
+    }
+});
+// 初始化
+document.addEventListener('DOMContentLoaded', function() {
+    console.log("初始化輪播圖");
+    showImage(index);
+});

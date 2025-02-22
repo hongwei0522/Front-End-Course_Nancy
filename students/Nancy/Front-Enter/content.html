@@ -5,15 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="referrer" content="strict-origin-when-cross-origin">
     <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-
     <link rel="stylesheet" href="/css/style.css">
     <link rel="stylesheet" href="/css/animate.css">
     <link rel="stylesheet" href="/css/article.css">
+    <link rel="stylesheet" href="/css/content.css">
     <link rel="stylesheet" href="/css/testGo.css">
     <link rel="stylesheet" href="/css/loginIn.css">
     <script src="/js/toTop.js"></script>
-    <title>文章列表</title>
+    <title>文章內容</title>
 </head>
 <body>
     <div class="navbar">
@@ -43,20 +42,66 @@
             <img src="./image/room01.jpg" class="active" alt="圖片1">
             <img src="./image/room02.jpg" alt="圖片2">
             <img src="./image/room03.jpg" alt="圖片3">
-            <div class="carousel-text">蒐羅前端學校</div>
+            <div class="carousel-text bInput"></div>
         </div>
     </section>
-    <div class="nav">
-        <a href="" class="allClass">全部</a>
-        <a href="" class="smallClass" data-type="小班制">小班制</a>
-        <a href="" class="byYourSelf" data-type="放養制">放養制</a>
-        <a href="" class="oneByOne" data-type="一對一">一對一</a>
-    </div>
     <main>
+        <div class="contentLeft">
+            <img class="contentPic" src="./image/2.jpg" alt="">
+            <img class="contentPic" src="/image/13.jpg" alt="">
+            <img class="contentPic" src="./image/15.jpg" alt="">
+            <img class="contentPic" src="/image/7.jpg" alt="">
+            <img class="contentPic" src="./image/AppWorksShool-rectangle.jpg" alt="">
+        </div>
+        <div class="contentRight">
+            <div class="top">
+                <div class="topic bInput"></div>
+                <div class="content bInput"></div>
+            </div>
+            <div class="bottom">
+                <div class="bTitle">
+                    整理
+                </div>
+                <div class="bLine">
+                    __
+                </div>
+                <div class="bText">
+                    <div class="bItem">
+                        <div class="bCLass">城市</div>
+                        <div class="bInput bWord"></div>
+                    </div>
+                    <div class="bItem">
+                        <div class="bCLass">班制</div>
+                        <div class="bInput bWord"></div>     
+                    </div>
+                    <div class="bItem">
+                        <div class="bCLass">教法</div>
+                        <div class="bInput bWord"></div>
+                    </div>
+                    <div class="bItem">
+                        <div class="bCLass">天數</div>
+                        <div class="bInput bWord"></div>
+                    </div>
+                    <div class="bItem">
+                        <div class="bCLass">週時</div>
+                        <div class="bInput bWord"></div>
+                    </div>
+                    <div class="bItem">
+                        <div class="bCLass">技術</div>
+                        <div class="bInput bWord"></div>
+                    </div>
+                    <div class="bItem">
+                        <div class="bCLass">信箱</div>
+                        <div class="bInput bWord"></div>
+                    </div>
+                    <div class="bItem">
+                        <div class="bCLass">電話</div>
+                        <div class="bInput bWord"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </main>
-    <div class="noResult">
-        <div id="noResults" class="hidden">搜尋沒有東東 T_T</div>
-    </div>
     <div class="toTop">
         <img id="backToTop" src="./image/FE_TOP.png" alt="">
     </div>
@@ -92,6 +137,17 @@
         <img src="./image/FE_logo-4.png" alt="">
     </div>
     <div class="searchDiv"></div>
+    <div class="carouselRoom">
+        <div class="leftArrow"><img src="./image/left-arrow.png" alt=""></div>
+        <div class="slideRoom">
+            <img class="sliderPic" src="./image/2.jpg" alt="">
+            <img class="sliderPic" src="/image/13.jpg" alt="">
+            <img class="sliderPic" src="./image/15.jpg" alt="">
+            <img class="sliderPic" src="/image/7.jpg" alt="">
+            <img class="sliderPic" src="./image/AppWorksShool-rectangle.jpg" alt="">
+        </div>
+        <div class="rightArrow"><img src="./image/right-arrow.png" alt=""></div>
+    </div>
     <div class="testgoContainer">
         <div class="testgogo testStart">
             <p class="testTitle">測驗說明</p>
@@ -172,15 +228,14 @@
         <div class="loginGmail">
             <div id="googleLoginBtn" class="loginInGmail">Log In With Gmail</div>
         </div>
+     
     </div>
     <script type="module" src="/js/firebase.js"></script>
     <script type="module" src="/js/firebase-db.js"></script>
-    <script type="module" src="/js/cardRenderer.js"></script>
-    <script type="module" src="/js/article.js"></script>
     <script src="/js/search.js"></script>
-    <script src="/js/carousel.js"></script>
-    <script src="/js/testGo.js"></script>
-    <script type="module" src="/js/collect.js"></script>
+<script src="/js/carousel.js"></script>
+<script src="/js/carouselRoom.js"></script>
+<script src="/js/content.js"></script>
+<script src="/js/testGo_content.js"></script>
 </body>
-
 </html>

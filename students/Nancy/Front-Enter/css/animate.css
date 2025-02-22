@@ -11,7 +11,7 @@
     justify-content: center;
     align-items: center;
     transition: 0.5s 0.5s;
-    z-index: 2000;
+    z-index: 4000;
     animation: moveUp 1s ease-in-out 2s forwards;
 }
 @keyframes moveUp {
@@ -75,7 +75,7 @@
         transform: translateY(0);
     }
 }
-a.item,.navList img,.logo {
+.navList .item, .navList img, .logo {
     animation: moveItem 1s ease-in-out 2s forwards;
     animation-fill-mode: none;
 }
