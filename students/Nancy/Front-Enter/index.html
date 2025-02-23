@@ -3,8 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="referrer" content="strict-origin-when-cross-origin">
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
     <link rel="stylesheet" href="/css/style.css">
     <link rel="stylesheet" href="/css/animate.css">
+    <link rel="stylesheet" href="/css/testGo.css">
+    <link rel="stylesheet" href="/css/loginIn.css">
     <script src="/js/toTop.js"></script>
     <title>Front-Enter - 前端轉職資訊</title>
 </head>
@@ -16,7 +20,7 @@
         <div class="navList">
             <a href="article.html" class="item">探索</a>
             <a href="" class="item">技能樹</a>
-            <a href="" class="item">登入</a>
+            <a class="item profileitem"></a>
             <img class="navSearch" src="./image/FE_search_green.png" alt="">
         </div>
     </div>
@@ -49,9 +53,9 @@
         <div class="room">
             <div class="roomWord">
                 <p class="roomText">教室精選</p>
-                <div class="room1">AppWorks School</div>
-                <div class="room2">彭彭的課程教學</div>
-                <div class="room3">五倍紅寶石</div>
+                <a href="/content.html?id=1538646651342" class="room1">AppWorks School</a>
+                <a href="/content.html?id=1539507849063" class="room2">彭彭的課程教學</a>
+                <a href="/content.html?id=1539674167504" class="room3">五倍紅寶石</a>
             </div>
             
         </div>
@@ -68,7 +72,7 @@
                             並追蹤最新的業界動態。
                         </p>
                     </div>
-                    <div class="btn">找學校</div>
+                    <a href="/article.html" class="btn">找學校</a>
                 </div>
                 <div class="service tree">
                     <img src="./image/FE_pen.png" alt="">
@@ -81,7 +85,7 @@
                             趕緊點進來試試看。
                         </p>   
                     </div>
-                    <div class="btn">技能樹</div>
+                    <a class="btn">技能樹</a>
                 </div>
             </div>
             
@@ -133,6 +137,92 @@
         <img src="./image/FE_logo-4.png" alt="">
     </div>
     <div class="searchDiv"></div>
+    <div class="testgoContainer">
+        <div class="testgogo testStart">
+            <p class="testTitle">測驗說明</p>
+            <p class="testTest">點選「開始測驗」後，系統將根據你的回答，找出最適合你的學習環境，並顯示有多少百分比的合適度。</p>
+            <div class="Tbtn">開始測驗</div>
+        </div>
+        <div class="testgogo testFirst">
+            <p class="testWord">選擇在哪座城市學習？</p>
+            <p class="testWord">1/5</p>
+            <div class="Tbtns">
+                <div data-value="5" class="Tbtn">台北</div>
+                <div data-value="4" class="Tbtn">台中</div>
+                <div data-value="3" class="Tbtn">高雄</div>
+                <div data-value="2" class="Tbtn">各地</div>
+                <div data-value="1" class="Tbtn">不重要</div>
+            </div>
+        </div>
+        <div class="testgogo testSecond">
+            <p class="testWord">每月能撥出多少費用學習？</p>
+            <p class="testWord">2/5</p>
+            <div class="Tbtns">
+                <div data-value="5" class="Tbtn">3000元以下</div>
+                <div data-value="4" class="Tbtn">6000元內</div>
+                <div data-value="3" class="Tbtn">10000元內</div>
+                <div data-value="2" class="Tbtn">10001元以上</div>
+                <div data-value="1" class="Tbtn">不重要</div>
+            </div>
+        </div>
+        <div class="testgogo testThird">
+            <p class="testWord">每周能撥出多少時間學習？</p>
+            <p class="testWord">3/5</p>
+            <div class="Tbtns">
+                <div data-value="5" class="Tbtn">16小時以下</div>
+                <div data-value="4" class="Tbtn">30小時內</div>
+                <div data-value="3" class="Tbtn">45小時內</div>
+                <div data-value="2" class="Tbtn">46小時以上</div>
+                <div data-value="1" class="Tbtn">不重要</div>
+            </div>
+        </div>
+        <div class="testgogo testFourth">
+            <p class="testWord">對班制的需求是？</p>
+            <p class="testWord">4/5</p>
+            <div class="Tbtns">
+                <div data-value="5" class="Tbtn">大班制</div>
+                <div data-value="4" class="Tbtn">小班制</div>
+                <div data-value="3" class="Tbtn">一對一</div>
+                <div data-value="2" class="Tbtn">不重要</div>
+            </div>
+        </div>
+        <div class="testgogo testFifth">
+            <p class="testWord">喜歡什麼樣的教學方式？</p>
+            <p class="testWord">5/5</p>
+            <div class="Tbtns">
+                <div data-value="5" class="Tbtn">放養制</div>
+                <div data-value="4" class="Tbtn">手把手教制</div>
+                <div data-value="3" class="Tbtn">不重要</div>
+            </div>
+        </div>
+        <div class="testgogo testEnd">
+            <p class="testWord">你有多適合下列學校呢？</p>
+            <div class="circle"><div class="percent"></div></div>
+            <div class="Tbtn"></div>
+        </div>
+    </div>
+    <div class="loginContainer">
+        <div class="loginLogo">
+            <img src="./image/FE_logo-2.png" alt="">
+        </div>
+        <div class="loginInput">
+            <input class="inputEmail" type="text" placeholder="Email">
+            <input class="inputPassword" placeholder="******" type="password" autocomplete="new-password">
+        </div>
+        <div class="forgetPass"><p>忘記密碼？</p></div>
+        <div class="loginNormal">
+            <div class="registerIn">註冊</div>
+            <div class="loginIn">登入</div>
+        </div> 
+        <div class="loginGmail">
+            <div id="googleLoginBtn" class="loginInGmail">Log In With Gmail</div>
+        </div>
+     
+    </div>
+    <script type="module" src="/js/firebase.js"></script>
+    <script type="module" src="/js/firebase-db.js"></script>
+    <script src="/js/search.js"></script>
+    <script src="/js/testGo.js"></script>
 </body>
-<script src="/js/search.js"></script>
+
 </html>

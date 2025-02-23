@@ -1,0 +1,97 @@
+.loginItem {
+    text-decoration: none;
+    color: #808080;
+    margin-right: 60px;
+    transition: .3s;
+}
+.loginContainer {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 350px;
+    height: 500px;
+    background-color: rgb(255, 255, 255);
+    border-radius: 5px;
+    border: 1px solid #979797;
+    z-index: 2300;
+    opacity: 0;
+pointer-events: none; /* 避免影響點擊事件 */
+}
+.error-message {
+    margin: 30px;
+}
+/* 顯示時的樣式 */
+.loginContainer.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+.loginLogo {
+    margin-bottom: 10px;
+}
+.loginLogo img{
+    width: 225px;
+    height: 105px;
+}
+.loginInput {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-bottom: 10px;
+}
+.inputEmail,.inputPassword{
+    width: 240px;
+    height:40px;
+    border: rgb(128, 128, 128) solid 0.5px;
+    font-size: 16px;
+    padding: 5px;
+    outline:none;
+}
+.forgetPass {
+    width: 240px;
+    display: flex;
+    justify-content: end;
+    color: rgb(128, 128, 128);
+    font-size: 16px;
+    margin-bottom: 20px;
+    cursor: pointer;
+}
+.loginNormal {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 10px;
+}
+.registerIn,.loginIn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 110px;
+    background-color: rgb(26, 216, 211);
+    height: 38px;
+    color: white;
+    font-size: 18px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-left: 10px;
+    margin-right: 10px;
+    letter-spacing: .1rem;
+
+}
+.loginInGmail {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 38px;
+    width: 240px;
+    background-color: #d93025;
+    color: white;
+    text-align: center;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    letter-spacing: .1rem;
+}

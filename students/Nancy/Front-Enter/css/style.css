@@ -1,6 +1,7 @@
 * {
     margin: 0;
     padding: 0;
+    box-sizing: border-box;
 }
 body {
     margin-left: auto;
@@ -89,8 +90,6 @@ a.item {
 }
 .searchBar {
     width: 80%;
-}
-input {
     border-radius:5px 0 0 5px;
     border: none;
     padding-left: 5px;
@@ -100,6 +99,13 @@ input {
     border: none;
     background-color: white;
     
+}
+.voiceBtn {
+    transition: 1s;
+}
+.listening {
+    background-color: red;
+    transition: 1s;
 }
 .searchBtn {
     border-radius: 0 5px 5px 0;
@@ -201,8 +207,6 @@ p.news {
 }
 .testGo {
     display: flex;
-    width: 80px;
-    height: 18px;
     padding: 7px 23px 7px 23px;
     border: 1px solid #1AD8D3;
     border-radius: 5px;
@@ -245,8 +249,6 @@ p.news {
 }
 .room1,.room2,.room3 {
     display: flex;
-    width: 180px;
-    height: 18px;
     padding: 7px 23px 7px 23px;
     margin-bottom: 20px;
     border: 1px solid #1AD8D3;
@@ -258,6 +260,7 @@ p.news {
     font-size: 18px;
     z-index:3;
     transition: 1s;
+    text-decoration: none;
 }
 /* skill */
 .skill {
@@ -311,8 +314,6 @@ p.title  {
     justify-content: center;
     align-items: center;
     font-size: 18px;
-    width: 80px;
-    height: 24px;
     padding: 7px 23px 7px 23px;
     border:#1AD8D3 1px solid;
     border-radius: 5px;
@@ -320,6 +321,7 @@ p.title  {
     color: white;
     cursor: pointer;
     margin-top: 50px;
+    text-decoration: none;
 }
 .text {
     display: flex;
@@ -413,6 +415,8 @@ p.title  {
     
 }
 
+
+
 /* RWD */
 /* 手機：螢幕寬度小於 767px (包含) 時 */
 @media screen and (max-width: 991px) {
@@ -441,8 +445,6 @@ p.title  {
         margin-bottom: 10px;
     }
     .btn {
-        width: 50px;
-        height: 19px;
         font-size: 14px;
         margin-top:10px
     }
@@ -485,5 +487,8 @@ p.title  {
     }
     .introText {
         font-size: 18px;
+    }
+    .skill {
+        height: 700px;
     }
 }
