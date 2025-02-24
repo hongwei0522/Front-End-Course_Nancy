@@ -62,6 +62,9 @@ main {
     margin-bottom: 30px;
     cursor: pointer;
 }
+.postManage {
+    text-decoration: none;
+}
 .personPic{
     border-radius: 50%;
     margin-bottom: 10px;

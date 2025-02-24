@@ -261,6 +261,7 @@ p.news {
     z-index:3;
     transition: 1s;
     text-decoration: none;
+    width: 200px;
 }
 /* skill */
 .skill {

@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="referrer" content="strict-origin-when-cross-origin">
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/post.css">
+    <link rel="stylesheet" href="css/profile.css">
+    <title>Front-Enter - 前端轉職資訊</title>
+</head>
+<body>
+    <div class="navbar">
+        <a href="/index.html" class="logo">
+            <img src="./image/FE_logo-4.png" alt="">
+        </da>
+        <div class="navList">
+            <a href="article.html" class="item">探索</a>
+            <a href="" class="item">技能樹</a>
+            <a class="item profileitem"></a>
+            <img class="navSearch" src="./image/FE_search_green.png" alt="">
+        </div>
+    </div>
+    <main>
+        <div class="leftPost">
+            <div class="havePost">
+                <p>查看貼文</p>
+                <i class="fa-solid fa-newspaper"></i>
+            </div>
+            <div class="newPost">
+                <p>發布貼文</p>
+                <i class="fa-solid fa-plus"></i>
+            </div>
+            <div class="deletePost">
+                <p>刪除貼文</p>
+                <i class="fa-solid fa-minus"></i>
+            </div>
+        </div>
+        <div class="rightPost">
+            <div class="postSection">
+                <p>課程名稱</p>
+                <input type="text" id="className">
+                <p>課程主題</p>
+                <input type="text" id="topic">
+                <p>課程內容</p>
+                <textarea name="" id="content" rows="8"></textarea>
+                <p>所在城市</p>
+                <input type="text" id="city">
+                <p>課程類型</p>
+                <input type="text" id="classType">
+                <p>教學方式</p>
+                <input type="text" id="teachWay">
+                <p>總天數</p>
+                <input type="text" id="totalDay">
+                <p>每週時數</p>
+                <input type="text" id="weekHour">
+                <p>主要技術</p>
+                <input type="text" id="technology">
+                <p>聯絡信箱</p>
+                <input type="text" id="mail">
+                <p>聯絡電話</p>
+                <input type="text" id="phone">
+                <div class="postBtn1">
+                    <button  class="profileBtn" id="publishBtn">發布文章</button>
+                    <button  class="profileBtn" id="cancelPostBtn">取消發文</button>
+                    <button  class="profileBtn" id="saveEditBtn">儲存編輯</button>
+                    <button  class="profileBtn" id="cancelEditBtn">取消編輯</button>
+                </div>
+                
+                <div class="line"></div>
+            </div>
+            <div class="ReadSection">
+                <p style="
+                text-align: center;
+            ">文章列表</p>
+                <div id="list"></div>
+                <div class="postBtn2">
+                    <button  class="profileBtn" id="ensureDeleteBtn">確認刪除</button>
+                    <button  class="profileBtn" id="cancelDeleteBtn">取消刪除</button>
+                </div>
+            </div>    
+        </div>
+    </main>
+    <footer>
+        <div class="footer">
+            <div class="contact">聯絡</div>
+            <div class="phone">
+                <div class="number1">N</div>
+                <div class="number2">0917-218-567</div>
+            </div>
+            <div class="email">
+                <div class="mail1">E</div>
+                <div class="mail2">aaa24295234@gmail.com</div>
+            </div>
+            <div class="social">
+                <div class="facebook">
+                    <!-- 安全性建議，避免新分頁存取 window.opener -->
+                    <a href="https://www.facebook.com" target="_blank" rel="noopener noreferrer"> 
+                        <img src="./image/new-facebook-blue.svg" alt="Facebook">
+                    </a>
+                </div>
+                
+                <div class="Line">
+                    <a href="https://www.line.me/tw/" target="_blank" rel="noopener noreferrer">
+                        <img src="./image/FE_line.png" alt="">
+                    </a>
+                    
+                </div>
+            </div>
+        </div>
+    </footer>
+    <script type="module" src="/js/post.js"></script>
+</body>
+
+</html>

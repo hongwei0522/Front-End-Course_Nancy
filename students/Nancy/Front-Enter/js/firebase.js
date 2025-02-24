@@ -19,6 +19,7 @@ auth.languageCode = 'en';
 // Google 登入提供者設置
 const provider = new GoogleAuthProvider();
 provider.setCustomParameters({
+    //避免 Google 自動選擇當前已登入的帳號
     'prompt': 'select_account'  // 強制用戶選擇帳號
 });
 
@@ -30,13 +31,6 @@ provider.addScope('profile');
 
 // 更新使用者資料函式
 async function updateUserProfile(user) {
-    console.log("🔍 開始更新用戶資料");
-    console.log("📝 當前用戶資料:", {
-        displayName: user?.displayName,
-        email: user?.email,
-        phoneNumber: user?.phoneNumber,
-        photoURL: user?.photoURL
-    });
 
     if (!user) {
         console.error("❌ 沒有用戶資料");
@@ -66,30 +60,20 @@ async function updateUserProfile(user) {
             picNav: document.querySelector(".profileitem")
         };
 
-        // 記錄元素是否存在
-        console.log("🔍 檢查頁面元素:", {
-            nameElement: !!elements.name,
-            phoneElement: !!elements.phone,
-            mailElement: !!elements.mail,
-            picElement: !!elements.pic,
-            picNavElement: !!elements.picNav
-        });
 
         // 更新輸入框的值
         if (elements.name) {
+            // 這行程式碼的目的是從 使用者的 Email 地址 中 提取名稱部分（@ 符號前面的部分）
             elements.name.value = user.displayName || user.email.split('@')[0];
             elements.name.setAttribute('readonly', 'true');  // 預設設為唯讀
-            console.log("✅ 更新名稱:", elements.name.value);
         }
         if (elements.phone) {
             elements.phone.value = user.phoneNumber || "未設定電話";
             elements.phone.setAttribute('readonly', 'true');  // 預設設為唯讀
-            console.log("✅ 更新電話:", elements.phone.value);
         }
         if (elements.mail) {
             elements.mail.value = user.email;
             elements.mail.setAttribute('readonly', 'true');  // 預設設為唯讀
-            console.log("✅ 更新郵件:", elements.mail.value);
         }
 
         // 更新頭像
@@ -108,7 +92,6 @@ async function updateUserProfile(user) {
                 width: "100px",
                 height: "100px"
             });
-            console.log("✅ 更新個人頁面頭像樣式");
         }
 
         if (elements.picNav) {
@@ -116,10 +99,8 @@ async function updateUserProfile(user) {
                 width: "50px",
                 height: "50px"
             });
-            console.log("✅ 更新導覽列頭像樣式");
         }
 
-        console.log("🎉 用戶資料更新完成");
         return true; // 表示更新成功
     } catch (error) {
         console.error("❌ 更新過程發生錯誤:", error);
@@ -132,16 +113,13 @@ const googleLogin = document.getElementById("googleLoginBtn");
 if (googleLogin) {
     googleLogin.addEventListener("click", async function () {
         try {
-            console.log("🔍 開始 Google 登入流程");
             // 使用 Google 登入，等待 Firebase 回應
             //signInWithPopup() 是Firebase 的非同步 API，它會開啟 Google 登入視窗，等待用戶登入後回傳 result。
             const result = await signInWithPopup(auth, provider);
-            console.log("✅ Google 登入成功");
             
             // 等 Firebase 回應成功後，再更新用戶資料
             const updated = await updateUserProfile(result.user);
             if (updated) {
-                console.log("🔄 準備跳轉到個人頁面");
                 window.location.href = "./profile.html";
             }
         } catch (error) {
@@ -232,7 +210,6 @@ const loginEmailPassword = async () => {
             txtEmail.value,
             txtPassword.value
         );
-        console.log("✅ Email 登入成功");
         
         // 清除密碼欄位
         txtPassword.value = '';
@@ -240,7 +217,6 @@ const loginEmailPassword = async () => {
         // 先更新用戶資料
         const updated = await updateUserProfile(userCredential.user);
         if (updated) {
-            console.log("🔄 準備跳轉到個人頁面");
             window.location.href = "./profile.html";
         }
     } catch (error) {
@@ -268,12 +244,11 @@ const loginEmailPassword = async () => {
 };
 // onAuthStateChanged()是Firebase內建的監聽函式，當用戶登入或登出時，它會自動執行
 onAuthStateChanged(auth, async (user) => {
-    console.log("🔄 用戶狀態改變:", user ? "已登入" : "未登入");
     updateNavigation(user);
-    
-    // 如果在個人頁面且用戶已登入，更新個人資料
+
+    // 確認當前頁面是否是 profile.html（用戶個人頁面）
+    // 如果用戶已登入，則更新 UI 中的使用者資料
     if (window.location.pathname.includes('profile.html') && user) {
-        console.log("📍 當前在個人頁面，開始更新用戶資料");
         await updateUserProfile(user);
     }
 });
@@ -286,6 +261,7 @@ function updateNavigation(user) {
     if (!profileItem) return;
 
     // 基本樣式設定 - 所有狀態都會有的樣式
+    // Object.assign() 用來 合併/修改 物件的屬性，如果有同樣屬性會被覆蓋
     Object.assign(profileItem.style, {
         cursor: 'pointer'
     });
@@ -309,6 +285,8 @@ function updateNavigation(user) {
     }
 
     if (user) {
+        // some用來檢查陣列中是否「至少有一個」元素符合條件
+        // 取出 providerData 陣列中的 每個 provider 物件，檢查這個 providerId 是否是 "password"
         if (user.providerData.some(provider => provider.providerId === "password")) {
             // 一般登入（Email/密碼）
             profileItem.innerHTML = "";
@@ -374,12 +352,12 @@ const createAccount = async () => {
     }
 
     try {
+        // 建立 Firebase 用戶
         const userCredential = await createUserWithEmailAndPassword(
             auth,
             txtEmail.value,
             txtPassword.value
         );
-        console.log("✅ 註冊成功:", userCredential.user);
         
         // 清除密碼欄位
         txtPassword.value = '';
@@ -388,6 +366,8 @@ const createAccount = async () => {
         showErrors(["註冊成功！您現在可以登入了"]);
         
         // 可選：自動登入
+        // 取得剛剛註冊成功的 userCredential.user
+        // 更新 用戶的個人資訊（通常是設定 displayName）
         await updateUserProfile(userCredential.user);
         window.location.href = "./profile.html";
     } catch (error) {
@@ -436,7 +416,6 @@ const logout = async () => {
         //await 讓函式等待登出完成後，才執行 console.log() 和 window.location.href = "./"
         //await signOut(auth) 確保用戶確實登出後才執行後續動作
         await signOut(auth);
-        console.log("✅ 成功登出");
         window.location.href = "./";
     } catch (error) {
         console.error("❌ 登出失敗:", error);

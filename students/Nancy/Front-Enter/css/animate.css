@@ -75,7 +75,7 @@
         transform: translateY(0);
     }
 }
-.navList .item, .navList img, .logo {
+.navList .item, .navList img, .logo,.profileitem {
     animation: moveItem 1s ease-in-out 2s forwards;
     animation-fill-mode: none;
 }

@@ -20,7 +20,10 @@ function showImage(index) {
 
 // 處理左箭頭點擊
 left.onclick = function(e) {
+    // 如果 left 是 <a href="#">，它的預設行為是跳轉頁面，這行可以防止頁面重新載入。
+    // 如果 left 是一個 <button>，則通常不會影響，但仍可保險防止一些預設行為。
     e.preventDefault();
+    // 防止點擊事件從 left 按鈕傳播到其他父層元素（例如 carousel 容器）
     e.stopPropagation();
     // 更新索引
     index = (index - 1 + carouselImages.length) % carouselImages.length;

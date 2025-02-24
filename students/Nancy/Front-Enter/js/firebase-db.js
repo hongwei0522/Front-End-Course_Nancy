@@ -20,6 +20,8 @@ function initializeElements() {
     mailInput = document.querySelector(".tMail");
 
     // 只有在所有必要元素都存在時才添加事件監聽器
+    // 在 JavaScript 操作 DOM 時，document.querySelector() 可能會找不到對應的元素（回傳 null）。
+    // 如果 Edit、Cancel 或 Ensure 有一個是 null，但仍然執行 addEventListener，就會出現錯誤
     if (Edit && Cancel && Ensure) {
         Edit.addEventListener("click", handleEditClick);
         Cancel.addEventListener("click", handleCancelClick);
@@ -29,13 +31,16 @@ function initializeElements() {
 
 // 處理編輯按鈕點擊
 function handleEditClick() {
+    // 只要有一個條件為 true（代表某個變數不存在），整個 if 條件就成立，程式就會執行 {} 內的錯誤處理邏輯。
+    // 確保 Edit、EditIng、TInputs 都存在，否則直接 return 結束函式，不執行後續邏輯。
+    // 避免操作 null 或 undefined 的變數時發生錯誤
     if (!Edit || !EditIng || !TInputs) return;
     //編輯狀態中
     Edit.classList.toggle('hidden');
     EditIng.classList.remove('hidden');
     
     TInputs.forEach(input => {
-        input.readOnly = false;
+        input.readOnly = false; // 可編輯
         input.style.border = "1px solid #ccc";
     });
 }
@@ -48,7 +53,7 @@ function handleCancelClick() {
     EditIng.classList.add('hidden');
     
     TInputs.forEach(input => {
-        input.readOnly = true;
+        input.readOnly = true; // 不可編輯
         input.style.border = "0px solid black";
     });
     //獲取用戶數據
@@ -65,7 +70,7 @@ function handleEnsureClick() {
     EditIng.classList.add('hidden');
     
     TInputs.forEach(input => {
-        input.readOnly = true;
+        input.readOnly = true; // 不可編輯
         input.style.border = "0px solid black";
     });
 }

@@ -1,0 +1,201 @@
+* {
+    font-family: "微軟正黑體",serif;
+}
+main {
+    margin-top: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 100px;
+}
+.leftPost,.rightPost {
+    flex:1;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    flex-direction: column;
+    min-height: 1000px;
+    height: auto;
+}
+.newPost,.deletePost,.havePost {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 30px;
+    width: 100%;
+    cursor: pointer;
+}
+.newPost:hover,.deletePost:hover,.havePost:hover {
+    color:#1AD8D3;
+}
+.fa-solid{
+    margin-left: 10px;
+}
+.rightPost {
+    flex:2;
+}
+.ReadSection,.postSection {
+    display: flex;
+    justify-content: center;    
+    align-items: center;
+    width: 600px;
+}
+input,textarea,button,#list,.line {
+    width: 100%;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+#list {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-top: 30px;
+}
+input {
+    height: 30px;
+    padding: 3px;
+    text-align: left;
+    vertical-align: middle;
+}
+button {
+    margin-top: 30px;
+    padding: 10px;
+    border:none;
+    text-align: center;
+    vertical-align: middle;
+}
+.postBtn1,.postBtn2 {
+    display: flex;
+    justify-content: center;
+}
+.profileBtn {
+    margin: 10px;
+}
+input,textarea {
+    outline: none;
+}
+.line {
+    padding: 30px;
+    border-bottom: 1px solid black;
+}
+
+.post-container {
+    display: flex;
+    margin: 5px;
+    width: 600px;
+}
+
+.delete-checkbox {
+    margin: 15px;
+    width: 20px;
+    height: 20px;
+    
+    cursor: pointer;
+}
+
+.accordion-item {
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    margin-bottom: 10px;
+    overflow: hidden;
+    width: 100%;
+}
+
+.accordion-header {
+    background: #1AD8D3;
+    color: white;
+    padding: 15px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.accordion-header:hover {
+    background: #18c2be;
+}
+
+.accordion-body {
+    padding: 15px;
+    background: #f9f9f9;
+    border-top: 1px solid #ddd;
+}
+
+summary {
+    list-style: none;
+}
+
+summary::-webkit-details-marker {
+    display: none;
+}
+
+/* 新增自定義的展開/收合指示器 */
+.accordion-header::after {
+    content: '+';
+    float: right;
+    font-weight: bold;
+    transition: transform 0.3s ease;
+}
+
+details[open] .accordion-header::after {
+    content: '-';
+}
+.edit-button-container {
+    margin-top: 15px;
+    text-align: right;
+}
+.edit-btn {
+    background-color: #1AD8D3;
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: background-color 0.3s ease;
+}
+.edit-btn:hover {
+    background-color: #18c2be;
+}
+
+.edit-btn i {
+    font-size: 14px;
+}
+.loading-message {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    color: #18c2be;
+    font-size: 16px;
+    font-weight: bold;
+    animation: fadeInOut 1.5s ease-in-out infinite;
+}
+
+@keyframes fadeInOut {
+    0% { opacity: 0.6; }
+    50% { opacity: 1; }
+    100% { opacity: 0.6; }
+}
+
+/* RWD */
+/* 手機：螢幕寬度小於 767px (包含) 時 */
+@media screen and (max-width: 991px) {
+    .ReadSection,.postSection {
+        width: 250px;
+        
+    }
+    .post-container {
+        width: 240px;
+    }
+}
+
+@media screen and (min-width: 768px) and (max-width: 991px) {
+    .ReadSection,.postSection {
+        width: 400px;
+    }
+    .post-container {
+        width: 400px;
+    }
+}
