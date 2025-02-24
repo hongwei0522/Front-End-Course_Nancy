@@ -1,4 +1,7 @@
 import { renderCard } from './cardRenderer.js';
+import { getDatabase, ref, onValue, off } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-database.js";
+import { app } from './firebase.js';
+const database = getDatabase(app);
 
 document.addEventListener("DOMContentLoaded", function () {
     // 獲取 DOM 節點
@@ -29,6 +32,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // 處理搜尋功能
     function handleSearch() {
+        //filterCards(filterType, keyword)
         filterCards(getActiveFilterType(), searchInput.value.trim()); // 根據輸入內容篩選文章
         hideSearchBox(); // 搜尋後關閉搜尋框
     }
@@ -60,6 +64,11 @@ document.addEventListener("DOMContentLoaded", function () {
             micBtn.classList.add("listening"); // 標記麥克風正在接收語音輸入
         };
         recognition.onresult = function (event) {
+            // event 是由 SpeechRecognitionEvent 提供的 語音辨識結果物件
+            // event.results 是一個 類似陣列（類陣列，SpeechRecognitionResultList）的物件，其中包含 所有語音辨識的結果
+            // event.results[0] → 第一組語音辨識結果。
+            // event.results[0][0] → 這組結果中 最可信的候選文字。
+            // event.results[0][0].transcript → 實際的辨識文字內容。
             const transcript = event.results[0][0].transcript;
             searchInput.value = transcript; // 將語音轉換的文字填入搜尋框
             setTimeout(() => {
@@ -76,42 +85,103 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // 監聽語音按鈕點擊事件
     micBtn.addEventListener("click", startSpeechRecognition);
+
+    // 初始載入文章
+    loadArticles();
 });
 
-// 透過非同步函式載入 JSON 檔案
-async function room() {
-    const requestURL = "front-enter-export.json";
-    const response = await fetch(requestURL);
-    const articleDatas = await response.json();
-    const articles = Object.values(articleDatas.article);
-    roomBody(articles); // 渲染文章內容
+// 生成隨機圖片路徑
+function getRandomImage() {
+    const roomImages = ['room01', 'room02', 'room03', 'room04', 'room05'];
+    
+    // 隨機選擇一張房間圖片
+    // Math.random() 產生 0 ~ 1 的隨機小數（不含 1）。
+    // Math.random() * roomImages.length 產生 0 ~ 陣列長度 的隨機小數。
+    // Math.floor() 無條件捨去小數，確保結果是 0 到 roomImages.length - 1 之間的整數。
+    // roomImages[randomIndex] 選擇對應的圖片名稱。
+    const randomRoom = roomImages[Math.floor(Math.random() * roomImages.length)];
+    return `./image/${randomRoom}.jpg`;
 }
 
-// 渲染文章內容
-function roomBody(articles) {
+// 從 Firebase 載入文章資料
+function loadArticles() {
+    // 使用 Firebase Realtime Database 的 ref() 函式來建立一個 資料參照 (Reference)，指向 posts 節點。
+    // postsRef 變數就代表 posts 資料的位置，之後會透過這個變數來讀取或監聽 posts
+    const postsRef = ref(database, 'posts');
     const main = document.querySelector("main");
-    main.innerHTML = ""; // 清空 main 內容
     
-    articles.forEach(obj => {
-        renderCard(obj, main);
+    // 清除現有的監聽器
+    // off(postsRef) 先移除 postsRef 的所有監聽器，確保不會有舊的監聽影響新的資料載入
+    off(postsRef);
+    
+    // 添加載入中的提示
+    main.innerHTML = '<div class="loading">載入文章中...</div>';
+
+    // 監聽 Firebase 資料變更
+    // 當 posts 節點的資料變更時，會自動觸發 callback 函式。
+    // snapshot 代表 Firebase 讀取到的資料快照，可以用來取得 posts 節點的值。
+    onValue(postsRef, (snapshot) => {
+        main.innerHTML = ""; // 清空 main 內容
+        
+        if (!snapshot.exists()) {
+            main.innerHTML = '<div class="no-articles">目前沒有文章</div>';
+            return;
+        }
+        // 將 Firebase 讀取到的 posts 節點資料 轉成 JavaScript 物件
+        const posts = snapshot.val();
+        // 將 Firebase 資料轉換為卡片格式並渲染
+        // Object.entries(posts) 會將 posts 物件轉換成 陣列陣列 (Array of Arrays)。
+        // forEach(([id, post]) => {...}) 會遍歷 每篇文章，其中：
+            // id：Firebase 資料的 Key（例如 post1, post2）。
+            // post：該文章的內容（物件）。
+        Object.entries(posts).forEach(([id, post]) => {
+            // 限制 content 長度在 50 字以內
+            const truncatedContent = (post.content || "").length > 50 
+                ? (post.content || "").substring(0, 50) + "..." 
+                : post.content || "";
+
+            const cardData = {
+                classType: post.classType || "",
+                city: post.city || "",
+                name: post.className || "",
+                preface: truncatedContent, // 限制 content 長度在 50 字以內
+                teachingMethod: post.teachWay || "",
+                rectangleUrl: getRandomImage(),
+                creatTime: id,
+                id: id  // 添加 id 屬性以供收藏功能使用
+            };
+            // 使用 cardData 來 建立 HTML 卡片。
+            // main 作為 容器 (Container)，將卡片插入到頁面中。
+            renderCard(cardData, main);
+        });
+    }, (error) => {
+        console.error("載入文章時發生錯誤:", error);
+        main.innerHTML = '<div class="articlEerror">請先登入</div>';
     });
 }
 
 // 篩選文章內容
 function filterCards(filterType, keyword) {
     const cards = document.querySelectorAll(".card");
-     // 設定一個變數來檢查是否有符合條件的卡片
+    // 設定一個變數來檢查是否有符合條件的卡片
     let hasVisibleCards = false;
     const noResultsMessage = document.getElementById("noResults");
 
     cards.forEach(card => {
         // 從 data-type 屬性獲取類型，可能包含多個類型（字串）
+        // 將字串依據「空格」拆分為陣列，這樣就可以檢查該卡片是否屬於 filterType。
+        // 如果 card.dataset.type 是 undefined，則回傳 [] (空陣列)，避免錯誤。
         const types = card.dataset.type ? card.dataset.type.split(" ") : [];
         // 從 data-keywords 屬性獲取所有關鍵字
         const keywords = card.dataset.keywords || "";
         // 檢查當前卡片的類型是否符合篩選條件
-        const matchesType = !filterType || types.includes(filterType);
         // 檢查當前卡片的關鍵字是否包含搜尋關鍵字
+        // 檢查 types 陣列是否包含 filterType，即 檢查該卡片是否屬於選擇的類型。
+        // 如果 filterType 為 null 或 "" (未選擇篩選條件)，則不做類型篩選 (!filterType 為 true)
+        const matchesType = !filterType || types.includes(filterType);
+        // toLowerCase()：轉換為小寫，避免大小寫影響搜尋結果。
+        // includes()：檢查 keywords 是否包含 keyword。
+        // 如果 keyword 為空字串 ("") 或 null，則不篩選關鍵字 (!keyword 為 true)。
         const matchesKeyword = !keyword || keywords.toLowerCase().includes(keyword.toLowerCase());
 
         if (matchesType && matchesKeyword) {
@@ -130,6 +200,3 @@ function getActiveFilterType() {
     const activeButton = document.querySelector(".nav a.active");
     return activeButton ? activeButton.dataset.type : "";
 }
-
-// 載入文章
-room();

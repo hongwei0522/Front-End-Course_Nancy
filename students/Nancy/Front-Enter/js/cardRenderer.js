@@ -1,4 +1,10 @@
-// 為 article 頁面專門的渲染函數
+import { getDatabase, ref, set, get, remove } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-database.js";
+import { getAuth } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-auth.js";
+import { app } from './firebase.js';
+
+const database = getDatabase(app);
+const auth = getAuth(app);
+// article的渲染函數
 export function renderCard(obj, container) {
     const Article = document.createElement("div");
     Article.classList.add("article");
@@ -7,6 +13,7 @@ export function renderCard(obj, container) {
     Card.classList.add("card");
     Card.setAttribute("data-type", obj.classType);
     Card.setAttribute("data-keywords", `${obj.city} ${obj.name} ${obj.preface} ${obj.teachingMethod}`.toLowerCase());
+    Card.setAttribute("data-id", obj.id); // 添加 data-id 屬性存儲文章ID
 
     const Site = document.createElement("div");
     Site.classList.add("site");
@@ -22,7 +29,7 @@ export function renderCard(obj, container) {
     Pic.classList.add("pic");
 
     const RoomPic = document.createElement("a");
-    RoomPic.setAttribute("href", `/content.html?id=${obj.creatTime}`);
+    RoomPic.setAttribute("href", `/content.html?id=${obj.id}`);
     
     const RoomPicImg = document.createElement("img");
     RoomPicImg.classList.add("roomPic");
@@ -31,17 +38,17 @@ export function renderCard(obj, container) {
     
     const Title = document.createElement("a");
     Title.classList.add("title");
-    Title.setAttribute("href", `/content.html?id=${obj.creatTime}`);
+    Title.setAttribute("href", `/content.html?id=${obj.id}`);
     Title.textContent = obj.name;
 
     const Text = document.createElement("a");
     Text.classList.add("text");
-    Text.setAttribute("href", `/content.html?id=${obj.creatTime}`);
+    Text.setAttribute("href", `/content.html?id=${obj.id}`);
     Text.textContent = obj.preface;
         
     const ReadMore = document.createElement("a");
     ReadMore.classList.add("readMore");
-    ReadMore.setAttribute("href", `/content.html?id=${obj.creatTime}`);
+    ReadMore.setAttribute("href", `/content.html?id=${obj.id}`);
         
     const Read = document.createElement("p");
     Read.classList.add("read");
@@ -75,10 +82,75 @@ export function renderCard(obj, container) {
     Collected.appendChild(SrHeart);
     UnCollect.appendChild(SbHeart);
     
+    UnCollect.addEventListener('click', async () => {
+        const user = auth.currentUser;
+        if (!user) {
+            alert('請先登入');
+            return;
+        }
+
+        try {
+            // 將文章加入收藏
+            await set(ref(database, `collects/${user.uid}/${obj.id}`), {
+                timestamp: Date.now(),
+                articleId: obj.id
+            });
+            UnCollect.classList.add('hidden');
+            Collected.classList.remove('hidden');
+        } catch (error) {
+            console.error('收藏失敗:', error);
+            alert('收藏失敗，請稍後再試');
+        }
+    });
+
+    // 修改取消收藏按鈕的事件處理
+    Collected.addEventListener('click', async () => {
+        const user = auth.currentUser;
+        if (!user) {
+            alert('請先登入');
+            return;
+        }
+
+        try {
+            // 從收藏中移除文章
+            await remove(ref(database, `collects/${user.uid}/${obj.id}`));
+            Collected.classList.add('hidden');
+            UnCollect.classList.remove('hidden');
+        } catch (error) {
+            console.error('取消收藏失敗:', error);
+            alert('取消收藏失敗，請稍後再試');
+        }
+    });
+
+    // 檢查文章是否已被收藏
+    async function checkIfCollected() {
+        const user = auth.currentUser;
+        if (!user) return;
+
+        try {
+            const collectRef = ref(database, `collects/${user.uid}/${obj.id}`);
+            const snapshot = await get(collectRef);
+            
+            if (snapshot.exists()) {
+                UnCollect.classList.add('hidden');
+                Collected.classList.remove('hidden');
+            }
+        } catch (error) {
+            console.error('檢查收藏狀態失敗:', error);
+        }
+    }
+
+    // 在卡片渲染完成後檢查收藏狀態
+    checkIfCollected();
+
+
     container.appendChild(Article);
     return Card;
+
+
 }
-// 為 profile 頁面專門的渲染函數
+
+// profile的渲染函數
 export function renderLikePageCard(obj, container) {
     const Card = document.createElement("div");
     Card.classList.add("card");
@@ -89,7 +161,7 @@ export function renderLikePageCard(obj, container) {
     
     const Title = document.createElement("a");
     Title.classList.add("title");
-    Title.setAttribute("href", `/content.html?id=${obj.creatTime}`);
+    Title.setAttribute("href", `/content.html?id=${obj.id}`);
     Title.textContent = obj.name;
 
     const TrashIcon = document.createElement("i");
@@ -101,11 +173,12 @@ export function renderLikePageCard(obj, container) {
         // || '[]'：如果 localStorage 裡沒有 'collectedCards'，則回傳 '[]'，確保 JSON.parse 不會出錯。
         // JSON.parse(...)：把字串轉回 JavaScript 陣列，這樣就能操作陣列。
         const collectedIds = JSON.parse(localStorage.getItem('collectedCards') || '[]');
-        //如果 index 為 -1，表示沒有找到該文章的 creatTime，則不會執行刪除。
-        const index = collectedIds.indexOf(obj.creatTime.toString());
+        //如果 index 為 -1，表示沒有找到該文章的 ID，則不會執行刪除。
+        const index = collectedIds.indexOf(obj.id);
         if (index > -1) {
             // splice(index, 1)：表示從 index 開始刪除 1 個元素。
             collectedIds.splice(index, 1);
+            // 從 localStorage 使用setItem取得 key 為 "collectedCards" 的值
             localStorage.setItem('collectedCards', JSON.stringify(collectedIds));
             // 從畫面中移除
             Card.remove();

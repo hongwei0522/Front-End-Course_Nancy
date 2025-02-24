@@ -183,3 +183,6 @@ main {
     transition: transform 0.5s;
     color:rgb(124, 165, 151);
 }
+.articlEerror{
+    margin-top: 100px;
+}
