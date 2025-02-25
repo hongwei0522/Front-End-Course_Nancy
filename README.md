@@ -1,3 +1,5 @@
+使用firebase hosting部屬：https://front-enter-43dc3.web.app/
+
 <h1>
 Front-Enter
 </h1>
