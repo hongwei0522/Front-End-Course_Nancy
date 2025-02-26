@@ -363,7 +363,7 @@ const createAccount = async () => {
         txtPassword.value = '';
         
         // 顯示成功訊息
-        showErrors(["註冊成功！您現在可以登入了"]);
+        showErrors(["註冊成功！"]);
         
         // 可選：自動登入
         // 取得剛剛註冊成功的 userCredential.user

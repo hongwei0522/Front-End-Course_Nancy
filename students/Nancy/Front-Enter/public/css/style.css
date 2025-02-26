@@ -139,7 +139,7 @@ a.item {
 /* section */
 .container {
     margin-top: 100px;
-    background-image: url("/image/key-visual.jpg");
+    background-image: url("../image/key-visual.jpg");
     background-repeat: no-repeat;
     background-position: center;
     background-size: cover;
@@ -188,7 +188,7 @@ p.news {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    background-image: url("/image/second-img.jpg");
+    background-image: url("../image/second-img.jpg");
     background-color: rgba(0, 0, 0, 0.5);
     background-blend-mode: darken;
     background-attachment: fixed;
@@ -229,7 +229,7 @@ p.news {
     align-items: center;
     justify-content: center;
 
-    background-image: url("/image/third-img.jpg");
+    background-image: url("../image/third-img.jpg");
     background-color: rgba(0, 0, 0, 0.5);
     background-blend-mode: darken;
     margin-top: 10px;
@@ -273,7 +273,7 @@ p.news {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    background-image: url("/image/15.jpg");
+    background-image: url("../image/15.jpg");
     flex-direction: row;
     background-attachment: fixed;
     margin-bottom: 10px;
@@ -287,12 +287,12 @@ p.news {
 .explore {
     display: flex;
     align-items: center;
-    background-image: url("/image/FE_white.png");
+    background-image: url("../image/FE_white.png");
     width: 336px;
     height: 445px;
 }
 .tree {
-    background-image: url("/image/FE_white.png");
+    background-image: url("../image/FE_white.png");
     width: 336px;
     height: 445px;
 }
@@ -340,7 +340,7 @@ p.title  {
     align-items: center;
     justify-content: center;
 
-    background-image: url("/image/five-img.jpg");
+    background-image: url("../image/five-img.jpg");
     background-color: rgba(0, 0, 0, 0.5);
     background-blend-mode: darken;
     margin-bottom: 10px;

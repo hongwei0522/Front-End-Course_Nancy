@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://front-enter-43dc3.web.app/sitemap.xml

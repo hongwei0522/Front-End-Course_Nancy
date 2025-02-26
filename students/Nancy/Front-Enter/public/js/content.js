@@ -22,24 +22,57 @@ async function room() {
         // 根據 source 參數決定資料來源
         // testGo文章來源使用本地JSON檔案
         if (source === 'test') {
-            // 從本地 JSON 檔案獲取資料
-            const requestURL = "front-enter-export.json";
-            const request = new Request(requestURL);
-            const response = await fetch(request);
-            const articleDatas = await response.json();
+            // 修正：使用絕對路徑或正確的相對路徑
+            const requestURL = "/front-enter-export.json"; // 使用絕對路徑指向網站根目錄
             
-            // 從 article 物件中找到對應 uid 的文章
-            // Object.values(...).find(...) 會遍歷所有文章，找出 uid 符合 contentId 的那一篇文章。
-            const article = Object.values(articleDatas.article).find(
-                article => article.uid === contentId
-            );
+            console.log("嘗試從以下位置獲取資料:", requestURL);
             
-            if (!article) {
-                console.error("在本地資料中找不到此 ID");
-                return;
+            try {
+                const request = new Request(requestURL);
+                const response = await fetch(request);
+                
+                // 檢查回應類型
+                const contentType = response.headers.get("content-type");
+                console.log("回應內容類型:", contentType);
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                
+                // 先獲取文本內容並輸出，以便檢查
+                const text = await response.text();
+                console.log("原始回應文本 (前500字符):", text.substring(0, 500));
+                
+                // 嘗試解析 JSON
+                const articleDatas = JSON.parse(text);
+                
+                // 從 article 物件中找到對應 uid 的文章
+                // Object.values(...).find(...) 會遍歷所有文章，找出 uid 符合 contentId 的那一篇文章。
+                const article = Object.values(articleDatas.article).find(
+                    article => article.uid === contentId
+                );
+                
+                if (!article) {
+                    console.error("在本地資料中找不到此 ID");
+                    return;
+                }
+                
+                contentData = article;
+            } catch (fetchError) {
+                console.error("獲取本地數據時出錯:", fetchError);
+                
+                // 如果獲取本地數據失敗，嘗試從 Firebase 獲取
+                console.log("嘗試從 Firebase 獲取資料作為備用...");
+                const articleRef = ref(database, `posts/${contentId}`);
+                const snapshot = await get(articleRef);
+                
+                if (!snapshot.exists()) {
+                    console.error("在 Firebase 中也找不到此 ID");
+                    return;
+                }
+                
+                contentData = snapshot.val();
             }
-            
-            contentData = article;
         } else {
             // 從 Firebase 獲取資料
             // 使用ref取得 Firebase 資料庫中 posts 節點下對應 contentId 的參考位置。

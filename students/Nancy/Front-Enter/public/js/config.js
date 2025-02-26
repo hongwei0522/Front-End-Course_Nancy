@@ -2,6 +2,7 @@
 const firebaseConfig = {
     apiKey: "AIzaSyBrKVRHuO8aystgilHTqp4KsUkiI9MzGP8",
     authDomain: "front-enter-43dc3.firebaseapp.com",
+    databaseURL: "https://front-enter-43dc3-default-rtdb.firebaseio.com", // 添加這行！
     projectId: "front-enter-43dc3",
     storageBucket: "front-enter-43dc3.firebasestorage.app",
     messagingSenderId: "768100372381",
@@ -14,6 +15,7 @@ const validateConfig = () => {
     const requiredFields = [
         'apiKey',
         'authDomain',
+        'databaseURL', // 確保 databaseURL 被檢查
         'projectId',
         'storageBucket',
         'messagingSenderId',
