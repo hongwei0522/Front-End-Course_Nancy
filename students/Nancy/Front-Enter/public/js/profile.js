@@ -1,89 +1,140 @@
 // 引入渲染收藏文章的函式
 import { renderLikePageCard } from './cardRenderer.js';
-import { getDatabase, ref, get, remove } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-database.js";
-import { getAuth } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-auth.js";
-import { app, initializeFirebase } from './firebase-core.js';
-
-let database, auth;
-
-// 初始化 Firebase 服務
-async function initializeFirebaseServices() {
-    try {
-        await initializeFirebase();
-        if (!app) {
-            throw new Error('Firebase app 尚未初始化');
-        }
-        database = getDatabase(app);
-        auth = getAuth(app);
-        return true;
-    } catch (error) {
-        console.error('❌ Firebase 服務初始化失敗:', error);
-        return false;
-    }
-}
+import { 
+    initializeDatabaseService,
+    getCurrentUser,
+    onAuthStateChanged,
+    saveUserData,
+    onUserDataChanged,
+    getCollectedPosts,
+    removeFromCollection
+} from './database-service.js';
+import { logout } from './auth-service.js';
 
 // 選擇 DOM 元素
 const Profile = document.querySelector(".profile");  // 個人資料按鈕
 const PersonPage = document.querySelector(".personPage"); // 個人資料頁面
 const Like = document.querySelector(".like");  // 收藏按鈕
 const LikePage = document.querySelector(".likePage"); // 收藏頁面
+const LogoutBtn = document.querySelector(".loginOut"); // 登出按鈕
+
+// 用戶資料編輯相關的 DOM 元素
+let Edit, EditIng, Ensure, Cancel, TInputs, nameInput, phoneInput, mailInput;
+
+// 初始化用戶資料編輯相關的 DOM 元素
+function initializeUserEditElements() {
+    Edit = document.querySelector(".edit");
+    EditIng = document.querySelector(".editBtns");
+    Ensure = document.querySelector(".ensure");
+    Cancel = document.querySelector(".cancel");
+    TInputs = document.querySelectorAll(".tInput");
+    nameInput = document.querySelector(".tName");
+    phoneInput = document.querySelector(".tPhone");
+    mailInput = document.querySelector(".tMail");
+
+    // 只有在所有必要元素都存在時才添加事件監聽器
+    if (Edit && Cancel && Ensure) {
+        Edit.addEventListener("click", handleEditClick);
+        Cancel.addEventListener("click", handleCancelClick);
+        Ensure.addEventListener("click", handleEnsureClick);
+    }
+}
+
+// 處理編輯按鈕點擊
+function handleEditClick() {
+    if (!Edit || !EditIng || !TInputs) return;
+    // 編輯狀態中
+    Edit.classList.toggle('hidden');
+    EditIng.classList.remove('hidden');
+    
+    TInputs.forEach(input => {
+        input.readOnly = false; // 可編輯
+        input.style.border = "1px solid #ccc";
+    });
+}
+
+// 處理取消按鈕點擊
+function handleCancelClick() {
+    if (!Edit || !EditIng || !TInputs) return;
+    // 非編輯狀態中
+    Edit.classList.remove('hidden');
+    EditIng.classList.add('hidden');
+    
+    TInputs.forEach(input => {
+        input.readOnly = true; // 不可編輯
+        input.style.border = "0px solid black";
+    });
+    // 重新載入用戶數據
+    loadUserData();
+}
+
+// 處理確認按鈕點擊
+function handleEnsureClick() {
+    if (!Edit || !EditIng || !TInputs) return;
+    // 使用者點擊確認後
+    handleSaveUserData();
+    
+    Edit.classList.remove('hidden');
+    EditIng.classList.add('hidden');
+    
+    TInputs.forEach(input => {
+        input.readOnly = true; // 不可編輯
+        input.style.border = "0px solid black";
+    });
+}
+
+// 保存用戶數據
+async function handleSaveUserData() {
+    if (!nameInput || !phoneInput || !mailInput) {
+        console.error("找不到必要的輸入欄位");
+        return;
+    }
+
+    const userData = {
+        name: nameInput.value,
+        phone: phoneInput.value || "未設定電話",
+        email: mailInput.value
+    };
+
+    try {
+        await saveUserData(userData);
+        console.log('使用者數據更新成功');
+    } catch (error) {
+        console.error("使用者數據更新失敗:", error);
+        alert('保存失敗，請稍後再試');
+    }
+}
+
+// 載入用戶數據
+function loadUserData() {
+    if (!nameInput || !phoneInput || !mailInput) {
+        console.error("找不到必要的輸入欄位");
+        return;
+    }
+
+    onUserDataChanged((userData) => {
+        nameInput.value = userData.name || '';
+        phoneInput.value = userData.phone || "未設定電話";
+        mailInput.value = userData.email || '';
+    });
+}
 
 /**
  * 渲染收藏的文章
- * 這是一個非同步函式，因為需要等待 Firebase 來取得文章數據
  */
 async function renderLikedArticles() {
-    const user = auth.currentUser;
+    const user = getCurrentUser();
     if (!user) {
         console.log('用戶未登入');
         LikePage.innerHTML = '<p class="no-likes">請先登入</p>';
         return;
     }
+    
     const likePage = document.querySelector(".likePage");
-    likePage.innerHTML = ""; // 先清空內容，確保畫面不會堆疊
+    likePage.innerHTML = ""; // 先清空內容
 
     try {
-        // 獲取用戶的收藏列表
-        // get() 函式用來從 Firebase 中取得指定參照的資料，並返回一個 快照（snapshot）。
-        // collectRef 是我們剛剛創建的指向用戶收藏資料的參照。
-        const collectRef = ref(database, `collects/${user.uid}`);
-        // await 使得這個操作變成 異步，程式會在等待資料獲取的同時，暫停執行，直到從 Firebase 獲得資料為止。
-        // collectSnapshot 是資料庫回傳的結果，這是一個 DataSnapshot 物件，包含了我們請求的資料。
-        const collectSnapshot = await get(collectRef);
-        
-        if (!collectSnapshot.exists()) {
-            likePage.innerHTML = '<p class="no-likes">還沒有收藏的文章</p>';
-            return;
-        }
-
-        const collectedPosts = collectSnapshot.val();
-
-        // 從 Firebase 獲取所有文章
-        const postsRef = ref(database, 'posts');
-        const postsSnapshot = await get(postsRef);
-        
-        if (!postsSnapshot.exists()) {
-            likePage.innerHTML = '<p class="no-likes">找不到收藏的文章</p>';
-            return;
-        }
-
-        const posts = postsSnapshot.val();
-        const likedArticles = [];
-
-        // 過濾出收藏的文章
-        // Object.entries(posts) 會將 posts 物件轉換為一個包含所有屬性鍵值對的陣列。每個元素的形式是 [key, value]，其中 key 是屬性名稱（在這裡是 id），value 是該屬性的值（在這裡是 post，即每篇文章的資料）
-        for (const [id, post] of Object.entries(posts)) {
-            if (collectedPosts[id]) {
-                likedArticles.push({
-                    // 展開運算符 ...post，將 post 中的所有屬性複製到新物件中
-                    ...post,
-                    id,
-                    name: post.className || "",
-                    //隨機生成 1 到 5 之間的數字
-                    rectangleUrl: `./image/room0${Math.floor(Math.random() * 5) + 1}.jpg`
-                });
-            }
-        }
+        const likedArticles = await getCollectedPosts();
 
         if (likedArticles.length === 0) {
             likePage.innerHTML = '<p class="no-likes">還沒有收藏的文章</p>';
@@ -96,9 +147,7 @@ async function renderLikedArticles() {
                 const trashIcon = card.querySelector('.fa-trash');
                 trashIcon.addEventListener('click', async () => {
                     try {
-                        //ref(database, collects/${user.uid}/${article.id}) 用於建立一個指向 Firebase Realtime Database 中具體資料位置的引用（reference）。
-                        //collects/${user.uid}/${article.id} 是資料庫的路徑，表示這是某個用戶（user.uid）收藏的某篇文章（article.id）。
-                        await remove(ref(database, `collects/${user.uid}/${article.id}`));
+                        await removeFromCollection(article.id);
                         card.remove();
                         
                         // 檢查是否還有收藏的文章
@@ -120,7 +169,7 @@ async function renderLikedArticles() {
 
 // 點擊「收藏」按鈕時顯示收藏頁面，並重新渲染收藏文章
 Like.addEventListener("click", () => {
-    const user = auth.currentUser;
+    const user = getCurrentUser();
     if (!user) {
         alert('請先登入');
         return;
@@ -132,31 +181,76 @@ Like.addEventListener("click", () => {
 
 // 點擊「個人資料」按鈕時顯示個人資料頁面
 Profile.addEventListener("click", () => {
-    const user = auth.currentUser;
+    const user = getCurrentUser();
     if (!user) {
         alert('請先登入');
         return;
     }
     LikePage.classList.add("hidden"); // 隱藏收藏頁面
     PersonPage.classList.remove("hidden"); // 顯示個人資料頁面
+    // 載入用戶資料
+    if (nameInput && phoneInput && mailInput) {
+        loadUserData();
+    }
+});
+
+// 點擊「登出」按鈕時登出用戶
+LogoutBtn.addEventListener("click", async () => {
+    const user = getCurrentUser();
+    if (!user) {
+        alert('您尚未登入');
+        return;
+    }
+    
+    // 詢問使用者是否確認登出
+    if (confirm('確定要登出嗎？')) {
+        try {
+            await logout();
+            console.log('登出成功');
+        } catch (error) {
+            console.error('登出失敗:', error);
+            alert('登出失敗，請稍後再試');
+        }
+    }
 });
 
 // 當頁面載入時，監聽用戶登入狀態
 document.addEventListener('DOMContentLoaded', async () => {
-    // 初始化 Firebase 服務
-    const servicesInitialized = await initializeFirebaseServices();
+    // 初始化資料庫服務
+    const servicesInitialized = await initializeDatabaseService();
     if (!servicesInitialized) {
-        console.error('❌ Firebase 服務初始化失敗');
+        console.error('❌ 資料庫服務初始化失敗');
         return;
     }
     
-    auth.onAuthStateChanged((user) => {
+    // 初始化用戶資料編輯相關元素
+    initializeUserEditElements();
+    
+    // 設定輸入欄位初始狀態
+    if (TInputs) {
+        TInputs.forEach(input => {
+            input.readOnly = true;
+            input.style.border = "0px solid black";
+        });
+    }
+    
+    onAuthStateChanged((user) => {
         if (user) {
             if (!LikePage.classList.contains('hidden')) {
                 renderLikedArticles();
             }
+            // 如果個人資料頁面是顯示的，載入用戶資料
+            if (!PersonPage.classList.contains('hidden') && nameInput && phoneInput && mailInput) {
+                loadUserData();
+            }
         } else {
             LikePage.innerHTML = '<p class="no-likes">請先登入</p>';
+            // 清空用戶資料欄位
+            if (nameInput && phoneInput && mailInput) {
+                nameInput.value = '';
+                phoneInput.value = '';
+                mailInput.value = '';
+            }
         }
     });
 });

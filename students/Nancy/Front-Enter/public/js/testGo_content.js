@@ -5,7 +5,7 @@ const TestGo = document.querySelector(".testGo");
 const Tbtns = document.querySelectorAll(".Tbtn"); 
 const testEndBtn = document.querySelector(".testEnd .Tbtn"); 
 const percent = document.querySelector(".percent"); 
-// let index = 0; // 目前顯示的題目索引
+let index = 0; // 目前顯示的題目索引
 let userAnswers = []; // 儲存使用者選擇的答案 (數字陣列)
 
 // 修改 schoolsData，使用 uid 作為 link

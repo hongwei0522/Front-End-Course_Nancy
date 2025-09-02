@@ -1,32 +1,10 @@
-import { getDatabase, ref, get } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-database.js";
-import { app, initializeFirebase } from './firebase-core.js';
-
-let database;
-
-// 初始化 Firebase 服務
-async function initializeFirebaseServices() {
-    try {
-        // 確保 Firebase 已初始化
-        await initializeFirebase();
-        
-        if (!app) {
-            throw new Error('Firebase app 尚未初始化');
-        }
-        
-        database = getDatabase(app);
-        
-        return true;
-    } catch (error) {
-        console.error('❌ Firebase 服務初始化失敗:', error);
-        return false;
-    }
-}
+import { initializeDatabaseService, getPostById } from './database-service.js';
 
 async function room() {
-    // 確保 Firebase 服務已初始化
-    const servicesInitialized = await initializeFirebaseServices();
+    // 確保資料庫服務已初始化
+    const servicesInitialized = await initializeDatabaseService();
     if (!servicesInitialized) {
-        console.error('❌ Firebase 服務初始化失敗，無法繼續');
+        console.error('❌ 資料庫服務初始化失敗，無法繼續');
         return;
     }
     
@@ -97,28 +75,21 @@ async function room() {
                 
                 // 如果獲取本地數據失敗，嘗試從 Firebase 獲取
                 console.log("嘗試從 Firebase 獲取資料作為備用...");
-                const articleRef = ref(database, `posts/${contentId}`);
-                const snapshot = await get(articleRef);
+                contentData = await getPostById(contentId);
                 
-                if (!snapshot.exists()) {
+                if (!contentData) {
                     console.error("在 Firebase 中也找不到此 ID");
                     return;
                 }
-                
-                contentData = snapshot.val();
             }
         } else {
             // 從 Firebase 獲取資料
-            // 使用ref取得 Firebase 資料庫中 posts 節點下對應 contentId 的參考位置。
-            const articleRef = ref(database, `posts/${contentId}`);
-            const snapshot = await get(articleRef);
-            // snapshot.exists() 檢查該 id 是否有資料。
-            if (!snapshot.exists()) {
+            contentData = await getPostById(contentId);
+            
+            if (!contentData) {
                 console.error("在 Firebase 中找不到此 ID");
                 return;
             }
-            // snapshot.val() 取得該筆文章的資料。
-            contentData = snapshot.val();
         }
 
         const bInputs = document.querySelectorAll(".bInput");

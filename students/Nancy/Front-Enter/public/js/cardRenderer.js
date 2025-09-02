@@ -1,35 +1,18 @@
-import { getDatabase, ref, set, get, remove } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-database.js";
-import { getAuth } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-auth.js";
-import { app, initializeFirebase } from './firebase-core.js';
+import { 
+    initializeDatabaseService,
+    getCurrentUser,
+    addToCollection,
+    removeFromCollection,
+    isPostCollected
+} from './database-service.js';
 
-let database, auth;
+// 等待資料庫服務初始化
+initializeDatabaseService();
 
-// 初始化 Firebase 服務
-async function initializeFirebaseServices() {
-    try {
-        // 確保 Firebase 已初始化
-        await initializeFirebase();
-        
-        if (!app) {
-            throw new Error('Firebase app 尚未初始化');
-        }
-        
-        database = getDatabase(app);
-        auth = getAuth(app);
-        
-        return true;
-    } catch (error) {
-        console.error('❌ Firebase 服務初始化失敗:', error);
-        return false;
-    }
-}
-
-// 等待 Firebase 初始化
-initializeFirebaseServices();
 // article的渲染函數
 export function renderCard(obj, container) {
     try {
-        const user = auth.currentUser;
+        const user = getCurrentUser();
         if (!user) {
             alert('請先登入');
             return;
@@ -113,24 +96,14 @@ export function renderCard(obj, container) {
         UnCollect.appendChild(SbHeart);
         
         UnCollect.addEventListener('click', async () => {
-            if (!auth || !database) {
-                console.error('❌ Firebase 服務尚未初始化');
-                alert('系統初始化中，請稍後再試');
-                return;
-            }
-            
-            const user = auth.currentUser;
+            const user = getCurrentUser();
             if (!user) {
                 alert('請先登入');
                 return;
             }
 
             try {
-                // 將文章加入收藏
-                await set(ref(database, `collects/${user.uid}/${obj.id}`), {
-                    timestamp: Date.now(),
-                    articleId: obj.id
-                });
+                await addToCollection(obj.id);
                 UnCollect.classList.add('hidden');
                 Collected.classList.remove('hidden');
             } catch (error) {
@@ -141,21 +114,14 @@ export function renderCard(obj, container) {
 
         // 修改取消收藏按鈕的事件處理
         Collected.addEventListener('click', async () => {
-            if (!auth || !database) {
-                console.error('❌ Firebase 服務尚未初始化');
-                alert('系統初始化中，請稍後再試');
-                return;
-            }
-            
-            const user = auth.currentUser;
+            const user = getCurrentUser();
             if (!user) {
                 alert('請先登入');
                 return;
             }
 
             try {
-                // 從收藏中移除文章
-                await remove(ref(database, `collects/${user.uid}/${obj.id}`));
+                await removeFromCollection(obj.id);
                 Collected.classList.add('hidden');
                 UnCollect.classList.remove('hidden');
             } catch (error) {
@@ -166,19 +132,12 @@ export function renderCard(obj, container) {
 
         // 檢查文章是否已被收藏
         async function checkIfCollected() {
-            if (!auth || !database) {
-                console.log('❌ Firebase 服務尚未初始化，跳過收藏狀態檢查');
-                return;
-            }
-            
-            const user = auth.currentUser;
+            const user = getCurrentUser();
             if (!user) return;
 
             try {
-                const collectRef = ref(database, `collects/${user.uid}/${obj.id}`);
-                const snapshot = await get(collectRef);
-                
-                if (snapshot.exists()) {
+                const isCollected = await isPostCollected(obj.id);
+                if (isCollected) {
                     UnCollect.classList.add('hidden');
                     Collected.classList.remove('hidden');
                 }

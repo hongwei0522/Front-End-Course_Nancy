@@ -23,8 +23,6 @@ const initializeApp = async () => {
             }
         });
 
-        // 綁定事件監聽器
-        bindEventListeners();
 
         console.log("✅ 應用程式初始化完成");
     } catch (error) {
@@ -32,33 +30,7 @@ const initializeApp = async () => {
     }
 };
 
-// 綁定所有事件監聽器
-function bindEventListeners() {
-    const btnLogin = document.querySelector('.loginIn');
-    const btnSignup = document.querySelector('.registerIn');
-    const btnLogout = document.querySelector(".loginOut");
-    const googleLogin = document.getElementById("googleLoginBtn");
 
-    if (btnLogin) {
-        btnLogin.addEventListener("click", loginEmailPassword);
-        console.log("✅ 登入按鈕事件已綁定");
-    }
-
-    if (btnSignup) {
-        btnSignup.addEventListener("click", createAccount);
-        console.log("✅ 註冊按鈕事件已綁定");
-    }
-
-    if (btnLogout) {
-        btnLogout.addEventListener("click", logout);
-        console.log("✅ 登出按鈕事件已綁定");
-    }
-
-    if (googleLogin) {
-        googleLogin.addEventListener("click", handleGoogleLogin);
-        console.log("✅ Google 登入按鈕事件已綁定");
-    }
-}
 
 // 當 DOM 載入完成後初始化應用程式
 if (document.readyState === 'loading') {

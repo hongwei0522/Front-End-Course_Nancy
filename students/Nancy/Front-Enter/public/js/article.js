@@ -1,39 +1,16 @@
 import { renderCard } from "./cardRenderer.js";
-import {
-  getDatabase,
-  ref,
-  onValue,
-  off,
-} from "https://www.gstatic.com/firebasejs/11.3.1/firebase-database.js";
-import { app, initializeFirebase } from "./firebase-core.js";
+import { initializeDatabaseService, onPostsChanged } from './database-service.js';
 import {
   attachSearchEnterKey,
   attachVoiceRecognition,
   getSearchKeyword,
 } from "./search.js";
 
-let database;
-
-// 初始化 Firebase 服務
-async function initializeFirebaseServices() {
-    try {
-        await initializeFirebase();
-        if (!app) {
-            throw new Error('Firebase app 尚未初始化');
-        }
-        database = getDatabase(app);
-        return true;
-    } catch (error) {
-        console.error('❌ Firebase 服務初始化失敗:', error);
-        return false;
-    }
-}
-
 document.addEventListener("DOMContentLoaded", async function () {
-  // 初始化 Firebase 服務
-  const servicesInitialized = await initializeFirebaseServices();
+  // 初始化資料庫服務
+  const servicesInitialized = await initializeDatabaseService();
   if (!servicesInitialized) {
-    console.error('❌ Firebase 服務初始化失敗，無法載入文章');
+    console.error('❌ 資料庫服務初始化失敗，無法載入文章');
     return;
   }
   
@@ -95,44 +72,36 @@ function filterCards(filterType, keyword) {
 
 // 載入文章
 function loadArticles() {
-  const postsRef = ref(database, "posts");
   const main = document.querySelector("main");
-  off(postsRef);
   main.innerHTML = '<div class="loading">載入文章中...</div>';
 
-  onValue(
-    postsRef,
-    (snapshot) => {
-      main.innerHTML = "";
-      if (!snapshot.exists()) {
-        main.innerHTML = '<div class="no-articles">目前沒有文章</div>';
-        return;
-      }
-      const posts = snapshot.val();
-      Object.entries(posts).forEach(([id, post]) => {
-        const truncatedContent =
-          (post.content || "").length > 50
-            ? post.content.substring(0, 50) + "..."
-            : post.content || "";
-
-        const cardData = {
-          classType: post.classType || "",
-          city: post.city || "",
-          name: post.className || "",
-          preface: truncatedContent,
-          teachingMethod: post.teachWay || "",
-          rectangleUrl: getRandomImage(),
-          creatTime: id,
-          id: id,
-        };
-        renderCard(cardData, main);
-      });
-    },
-    (error) => {
-      console.error("載入文章時發生錯誤:", error);
-      main.innerHTML = '<div class="articlEerror">請先登入</div>';
+  onPostsChanged((posts) => {
+    main.innerHTML = "";
+    
+    if (!posts || Object.keys(posts).length === 0) {
+      main.innerHTML = '<div class="no-articles">目前沒有文章</div>';
+      return;
     }
-  );
+
+    Object.entries(posts).forEach(([id, post]) => {
+      const truncatedContent =
+        (post.content || "").length > 50
+          ? post.content.substring(0, 50) + "..."
+          : post.content || "";
+
+      const cardData = {
+        classType: post.classType || "",
+        city: post.city || "",
+        name: post.className || "",
+        preface: truncatedContent,
+        teachingMethod: post.teachWay || "",
+        rectangleUrl: getRandomImage(),
+        creatTime: id,
+        id: id,
+      };
+      renderCard(cardData, main);
+    });
+  });
 }
 
 // 隨機圖片

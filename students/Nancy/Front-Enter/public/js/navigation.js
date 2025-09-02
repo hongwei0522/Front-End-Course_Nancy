@@ -1,3 +1,5 @@
+import { handleGoogleLogin, loginEmailPassword, createAccount } from './auth-service.js';
+
 // 更新導覽列函式
 function updateNavigation(user) {
   const profileItem = document.querySelector(".profileitem");
@@ -20,6 +22,11 @@ function updateNavigation(user) {
   // 設置登入視窗的點擊外部關閉功能
   setupLoginContainerClickOutside(loginContainer, profileItem);
 
+  // 設置登入容器內按鈕的事件監聽器（只有在存在 loginContainer 時才執行）
+  if (loginContainer) {
+    setupLoginContainerEvents(loginContainer);
+  }
+
   if (user) {
     updateLoggedInNavigation(user, profileItem);
   } else {
@@ -30,17 +37,29 @@ function updateNavigation(user) {
   rebindProfileItemEvent(profileItem, handleProfileClick);
 }
 
+// 全局變量來儲存外部點擊處理函數
+let globalOutsideClickHandler = null;
+
 // 設置登入視窗點擊外部關閉
 function setupLoginContainerClickOutside(loginContainer, profileItem) {
   if (loginContainer) {
-    document.addEventListener("click", function (event) {
+    // 移除現有的事件監聽器（避免重複綁定）
+    if (globalOutsideClickHandler) {
+      document.removeEventListener("click", globalOutsideClickHandler);
+    }
+    
+    globalOutsideClickHandler = function(event) {
+      const currentLoginContainer = document.querySelector(".loginContainer");
       if (
-        !loginContainer.contains(event.target) &&
+        currentLoginContainer &&
+        !currentLoginContainer.contains(event.target) &&
         !profileItem.contains(event.target)
       ) {
-        loginContainer.classList.remove("active");
+        currentLoginContainer.classList.remove("active");
       }
-    });
+    };
+    
+    document.addEventListener("click", globalOutsideClickHandler);
   }
 }
 
@@ -90,6 +109,58 @@ function rebindProfileItemEvent(profileItem, handleProfileClick) {
   const newProfileItem = profileItem.cloneNode(true);
   profileItem.parentNode.replaceChild(newProfileItem, profileItem);
   newProfileItem.addEventListener("click", handleProfileClick);
+}
+
+// 設置登入容器內按鈕的事件監聽器
+function setupLoginContainerEvents(loginContainer) {
+  if (!loginContainer) return;
+
+  // 綁定登入按鈕事件
+  const loginBtn = loginContainer.querySelector(".loginIn");
+  if (loginBtn) {
+    // 移除現有事件監聽器
+    const newLoginBtn = loginBtn.cloneNode(true);
+    loginBtn.parentNode.replaceChild(newLoginBtn, loginBtn);
+    
+    newLoginBtn.addEventListener("click", async (event) => {
+      event.preventDefault();
+      event.stopPropagation();
+      console.log("🔍 登入按鈕被點擊");
+      await loginEmailPassword();
+    });
+  }
+
+  // 綁定註冊按鈕事件
+  const registerBtn = loginContainer.querySelector(".registerIn");
+  if (registerBtn) {
+    // 移除現有事件監聽器
+    const newRegisterBtn = registerBtn.cloneNode(true);
+    registerBtn.parentNode.replaceChild(newRegisterBtn, registerBtn);
+    
+    newRegisterBtn.addEventListener("click", async (event) => {
+      event.preventDefault();
+      event.stopPropagation();
+      console.log("🔍 註冊按鈕被點擊");
+      await createAccount();
+    });
+  }
+
+  // 綁定 Google 登入按鈕事件
+  const googleLoginBtn = loginContainer.querySelector("#googleLoginBtn");
+  if (googleLoginBtn) {
+    // 移除現有事件監聽器
+    const newGoogleLoginBtn = googleLoginBtn.cloneNode(true);
+    googleLoginBtn.parentNode.replaceChild(newGoogleLoginBtn, googleLoginBtn);
+    
+    newGoogleLoginBtn.addEventListener("click", async (event) => {
+      event.preventDefault();
+      event.stopPropagation();
+      console.log("🔍 Google 登入按鈕被點擊");
+      await handleGoogleLogin();
+    });
+  }
+
+  console.log("✅ 登入容器事件監聽器設置完成");
 }
 
 export { updateNavigation };
