@@ -1,153 +1,201 @@
 import { getDatabase, ref, set, get, remove } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-database.js";
 import { getAuth } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-auth.js";
-import { app } from './firebase.js';
+import { app, initializeFirebase } from './firebase-core.js';
 
-const database = getDatabase(app);
-const auth = getAuth(app);
+let database, auth;
+
+// 初始化 Firebase 服務
+async function initializeFirebaseServices() {
+    try {
+        // 確保 Firebase 已初始化
+        await initializeFirebase();
+        
+        if (!app) {
+            throw new Error('Firebase app 尚未初始化');
+        }
+        
+        database = getDatabase(app);
+        auth = getAuth(app);
+        
+        return true;
+    } catch (error) {
+        console.error('❌ Firebase 服務初始化失敗:', error);
+        return false;
+    }
+}
+
+// 等待 Firebase 初始化
+initializeFirebaseServices();
 // article的渲染函數
 export function renderCard(obj, container) {
-    const Article = document.createElement("div");
-    Article.classList.add("article");
-    
-    const Card = document.createElement("div");
-    Card.classList.add("card");
-    Card.setAttribute("data-type", obj.classType);
-    Card.setAttribute("data-keywords", `${obj.city} ${obj.name} ${obj.preface} ${obj.teachingMethod}`.toLowerCase());
-    Card.setAttribute("data-id", obj.id); // 添加 data-id 屬性存儲文章ID
-
-    const Site = document.createElement("div");
-    Site.classList.add("site");
-    
-    const SitePic = document.createElement("img");
-    SitePic.classList.add("sitePic");
-    SitePic.setAttribute("src", "./image/location_icon_one.png");
-    
-    const P1 = document.createElement("p");
-    P1.textContent = obj.city;
-
-    const Pic = document.createElement("div");
-    Pic.classList.add("pic");
-
-    const RoomPic = document.createElement("a");
-    RoomPic.setAttribute("href", `/content.html?id=${obj.id}`);
-    
-    const RoomPicImg = document.createElement("img");
-    RoomPicImg.classList.add("roomPic");
-    RoomPicImg.setAttribute("src", obj.rectangleUrl);
-    RoomPic.appendChild(RoomPicImg);
-    
-    const Title = document.createElement("a");
-    Title.classList.add("title");
-    Title.setAttribute("href", `/content.html?id=${obj.id}`);
-    Title.textContent = obj.name;
-
-    const Text = document.createElement("a");
-    Text.classList.add("text");
-    Text.setAttribute("href", `/content.html?id=${obj.id}`);
-    Text.textContent = obj.preface;
-        
-    const ReadMore = document.createElement("a");
-    ReadMore.classList.add("readMore");
-    ReadMore.setAttribute("href", `/content.html?id=${obj.id}`);
-        
-    const Read = document.createElement("p");
-    Read.classList.add("read");
-    Read.textContent = "read more";
-        
-    const Img1 = document.createElement("img");
-    Img1.setAttribute("src", "./image/arrow-right-one.png");
-
-    const Collected = document.createElement("div");
-    Collected.classList.add("collected","hidden");
-    const UnCollect = document.createElement("div");
-    UnCollect.classList.add("uncollect");
-    const SrHeart = document.createElement("i");
-    SrHeart.classList.add("fa-solid","fa-heart");
-    const SbHeart = document.createElement("i");
-    SbHeart.classList.add("fa-regular","fa-heart");
-    
-    Article.appendChild(Card);
-    Card.appendChild(Site);
-    Site.appendChild(SitePic);
-    Site.appendChild(P1);
-    Card.appendChild(Pic);
-    Pic.appendChild(RoomPic);
-    Card.appendChild(Title);
-    Card.appendChild(Text);
-    Card.appendChild(ReadMore);
-    ReadMore.appendChild(Read);
-    ReadMore.appendChild(Img1);
-    Card.appendChild(Collected);
-    Card.appendChild(UnCollect);
-    Collected.appendChild(SrHeart);
-    UnCollect.appendChild(SbHeart);
-    
-    UnCollect.addEventListener('click', async () => {
+    try {
         const user = auth.currentUser;
         if (!user) {
             alert('請先登入');
             return;
         }
 
-        try {
-            // 將文章加入收藏
-            await set(ref(database, `collects/${user.uid}/${obj.id}`), {
-                timestamp: Date.now(),
-                articleId: obj.id
-            });
-            UnCollect.classList.add('hidden');
-            Collected.classList.remove('hidden');
-        } catch (error) {
-            console.error('收藏失敗:', error);
-            alert('收藏失敗，請稍後再試');
-        }
-    });
+        // 將文章加入收藏;
+        const Article = document.createElement("div");
+        Article.classList.add("article");
+        
+        const Card = document.createElement("div");
+        Card.classList.add("card");
+        Card.setAttribute("data-type", obj.classType);
+        Card.setAttribute("data-keywords", `${obj.city} ${obj.name} ${obj.preface} ${obj.teachingMethod}`.toLowerCase());
+        Card.setAttribute("data-id", obj.id); // 添加 data-id 屬性存儲文章ID
 
-    // 修改取消收藏按鈕的事件處理
-    Collected.addEventListener('click', async () => {
-        const user = auth.currentUser;
-        if (!user) {
-            alert('請先登入');
-            return;
-        }
+        const Site = document.createElement("div");
+        Site.classList.add("site");
+        
+        const SitePic = document.createElement("img");
+        SitePic.classList.add("sitePic");
+        SitePic.setAttribute("src", "./image/location_icon_one.png");
+        
+        const P1 = document.createElement("p");
+        P1.textContent = obj.city;
 
-        try {
-            // 從收藏中移除文章
-            await remove(ref(database, `collects/${user.uid}/${obj.id}`));
-            Collected.classList.add('hidden');
-            UnCollect.classList.remove('hidden');
-        } catch (error) {
-            console.error('取消收藏失敗:', error);
-            alert('取消收藏失敗，請稍後再試');
-        }
-    });
+        const Pic = document.createElement("div");
+        Pic.classList.add("pic");
 
-    // 檢查文章是否已被收藏
-    async function checkIfCollected() {
-        const user = auth.currentUser;
-        if (!user) return;
+        const RoomPic = document.createElement("a");
+        RoomPic.setAttribute("href", `/content.html?id=${obj.id}`);
+        
+        const RoomPicImg = document.createElement("img");
+        RoomPicImg.classList.add("roomPic");
+        RoomPicImg.setAttribute("src", obj.rectangleUrl);
+        RoomPic.appendChild(RoomPicImg);
+        
+        const Title = document.createElement("a");
+        Title.classList.add("title");
+        Title.setAttribute("href", `/content.html?id=${obj.id}`);
+        Title.textContent = obj.name;
 
-        try {
-            const collectRef = ref(database, `collects/${user.uid}/${obj.id}`);
-            const snapshot = await get(collectRef);
+        const Text = document.createElement("a");
+        Text.classList.add("text");
+        Text.setAttribute("href", `/content.html?id=${obj.id}`);
+        Text.textContent = obj.preface;
             
-            if (snapshot.exists()) {
+        const ReadMore = document.createElement("a");
+        ReadMore.classList.add("readMore");
+        ReadMore.setAttribute("href", `/content.html?id=${obj.id}`);
+            
+        const Read = document.createElement("p");
+        Read.classList.add("read");
+        Read.textContent = "read more";
+            
+        const Img1 = document.createElement("img");
+        Img1.setAttribute("src", "./image/arrow-right-one.png");
+
+        const Collected = document.createElement("div");
+        Collected.classList.add("collected","hidden");
+        const UnCollect = document.createElement("div");
+        UnCollect.classList.add("uncollect");
+        const SrHeart = document.createElement("i");
+        SrHeart.classList.add("fa-solid","fa-heart");
+        const SbHeart = document.createElement("i");
+        SbHeart.classList.add("fa-regular","fa-heart");
+        
+        Article.appendChild(Card);
+        Card.appendChild(Site);
+        Site.appendChild(SitePic);
+        Site.appendChild(P1);
+        Card.appendChild(Pic);
+        Pic.appendChild(RoomPic);
+        Card.appendChild(Title);
+        Card.appendChild(Text);
+        Card.appendChild(ReadMore);
+        ReadMore.appendChild(Read);
+        ReadMore.appendChild(Img1);
+        Card.appendChild(Collected);
+        Card.appendChild(UnCollect);
+        Collected.appendChild(SrHeart);
+        UnCollect.appendChild(SbHeart);
+        
+        UnCollect.addEventListener('click', async () => {
+            if (!auth || !database) {
+                console.error('❌ Firebase 服務尚未初始化');
+                alert('系統初始化中，請稍後再試');
+                return;
+            }
+            
+            const user = auth.currentUser;
+            if (!user) {
+                alert('請先登入');
+                return;
+            }
+
+            try {
+                // 將文章加入收藏
+                await set(ref(database, `collects/${user.uid}/${obj.id}`), {
+                    timestamp: Date.now(),
+                    articleId: obj.id
+                });
                 UnCollect.classList.add('hidden');
                 Collected.classList.remove('hidden');
+            } catch (error) {
+                console.error('收藏失敗:', error);
+                alert('收藏失敗，請稍後再試');
             }
-        } catch (error) {
-            console.error('檢查收藏狀態失敗:', error);
+        });
+
+        // 修改取消收藏按鈕的事件處理
+        Collected.addEventListener('click', async () => {
+            if (!auth || !database) {
+                console.error('❌ Firebase 服務尚未初始化');
+                alert('系統初始化中，請稍後再試');
+                return;
+            }
+            
+            const user = auth.currentUser;
+            if (!user) {
+                alert('請先登入');
+                return;
+            }
+
+            try {
+                // 從收藏中移除文章
+                await remove(ref(database, `collects/${user.uid}/${obj.id}`));
+                Collected.classList.add('hidden');
+                UnCollect.classList.remove('hidden');
+            } catch (error) {
+                console.error('取消收藏失敗:', error);
+                alert('取消收藏失敗，請稍後再試');
+            }
+        });
+
+        // 檢查文章是否已被收藏
+        async function checkIfCollected() {
+            if (!auth || !database) {
+                console.log('❌ Firebase 服務尚未初始化，跳過收藏狀態檢查');
+                return;
+            }
+            
+            const user = auth.currentUser;
+            if (!user) return;
+
+            try {
+                const collectRef = ref(database, `collects/${user.uid}/${obj.id}`);
+                const snapshot = await get(collectRef);
+                
+                if (snapshot.exists()) {
+                    UnCollect.classList.add('hidden');
+                    Collected.classList.remove('hidden');
+                }
+            } catch (error) {
+                console.error('檢查收藏狀態失敗:', error);
+            }
         }
+
+        // 在卡片渲染完成後檢查收藏狀態
+        checkIfCollected();
+
+        container.appendChild(Article);
+        return Card;
+    } catch (error) {
+        console.error('渲染卡片失敗:', error);
+        alert('渲染卡片失敗，請稍後再試');
     }
-
-    // 在卡片渲染完成後檢查收藏狀態
-    checkIfCollected();
-
-
-    container.appendChild(Article);
-    return Card;
-
-
 }
 
 // profile的渲染函數

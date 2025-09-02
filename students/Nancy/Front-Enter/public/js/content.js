@@ -1,9 +1,35 @@
 import { getDatabase, ref, get } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-database.js";
-import { app } from './firebase.js';
+import { app, initializeFirebase } from './firebase-core.js';
 
-const database = getDatabase(app);
+let database;
+
+// 初始化 Firebase 服務
+async function initializeFirebaseServices() {
+    try {
+        // 確保 Firebase 已初始化
+        await initializeFirebase();
+        
+        if (!app) {
+            throw new Error('Firebase app 尚未初始化');
+        }
+        
+        database = getDatabase(app);
+        
+        return true;
+    } catch (error) {
+        console.error('❌ Firebase 服務初始化失敗:', error);
+        return false;
+    }
+}
 
 async function room() {
+    // 確保 Firebase 服務已初始化
+    const servicesInitialized = await initializeFirebaseServices();
+    if (!servicesInitialized) {
+        console.error('❌ Firebase 服務初始化失敗，無法繼續');
+        return;
+    }
+    
     // 取得當前網址的 URL 參數
     // window.location.search 會取得當前網址的查詢字串（如 ?id=123&source=test）。
     // new URLSearchParams(...) 讓我們能夠輕鬆解析這些參數，get("id") 會取得 id 的值，get("source") 會取得 source 的值。
@@ -12,8 +38,16 @@ async function room() {
     const contentId = urlParams.get("id");
     const source = urlParams.get("source");
     
+    // 檢查是否在需要 ID 參數的頁面上（content.html）
+    const currentPath = window.location.pathname;
+    const isContentPage = currentPath.includes('content.html');
+    
+    // 如果沒有 ID 參數且在 content.html 頁面，顯示錯誤
+    // 如果在其他頁面（如 article.html），則靜默返回
     if (!contentId) {
-        console.error("缺少 ID 參數");
+        if (isContentPage) {
+            console.error("缺少 ID 參數");
+        }
         return;
     }
 
@@ -22,7 +56,7 @@ async function room() {
         // 根據 source 參數決定資料來源
         // testGo文章來源使用本地JSON檔案
         if (source === 'test') {
-            // 修正：使用絕對路徑或正確的相對路徑
+            // 使用絕對路徑或正確的相對路徑
             const requestURL = "/front-enter-export.json"; // 使用絕對路徑指向網站根目錄
             
             console.log("嘗試從以下位置獲取資料:", requestURL);

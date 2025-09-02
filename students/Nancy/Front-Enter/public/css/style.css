@@ -406,6 +406,8 @@ p.title  {
 }
 .number2,.mail2 {
     letter-spacing: .5rem;
+    text-decoration: none;
+    color: #3f3a3a;
 }
 .email,.social {
     display: flex;
@@ -422,10 +424,16 @@ p.title  {
 /* 手機：螢幕寬度小於 767px (包含) 時 */
 @media screen and (max-width: 991px) {
     a.item {
-        margin-right: 30px;
+        margin-right: 20px;
+        margin-inline-end: 20px;
     }
     .navList {
-        margin-right: 50px;
+        margin-right: 0px;
+        width: 100%;
+        justify-content: space-evenly
+    }
+    .logo {
+        display: none;
     }
     .skill {
         height: 700px;
@@ -457,7 +465,7 @@ p.title  {
         font-size: 14px;
     }
     .footer {
-        height: 160px;
+        height: auto;
         padding: 10px;
         display: flex;
         flex-direction: column;
@@ -468,15 +476,18 @@ p.title  {
         margin: 10px;
     }
     .social {
-        position: absolute;
-        right: 5px;
-        bottom: 10px;
+        width: 100%;
+        display: flex;
+        justify-content: end;
+        padding-right: 10px;
     }
     .number1,.mail1 {
         margin-right: 20px;
     }
     .number2,.mail2 {
         letter-spacing: .2rem;
+        text-decoration: none;
+        color: #3f3a3a;
     }
 
 }

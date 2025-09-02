@@ -1,9 +1,28 @@
 import { getDatabase, ref, onValue, update, off } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-database.js";
 import { getAuth } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-auth.js";
-import { app } from './firebase.js';
+import { app, initializeFirebase } from './firebase-core.js';
 
-const database = getDatabase(app);
-const auth = getAuth(app);
+let database, auth;
+
+// 初始化 Firebase 服務
+async function initializeFirebaseServices() {
+    try {
+        // 確保 Firebase 已初始化
+        await initializeFirebase();
+        
+        if (!app) {
+            throw new Error('Firebase app 尚未初始化');
+        }
+        
+        database = getDatabase(app);
+        auth = getAuth(app);
+        
+        return true;
+    } catch (error) {
+        console.error('❌ Firebase 服務初始化失敗:', error);
+        return false;
+    }
+}
 
 // DOM 元素
 let Edit, EditIng, Ensure, Cancel, TInputs, nameInput, phoneInput, mailInput;
@@ -77,8 +96,8 @@ function handleEnsureClick() {
 
 // 保存用戶數據到 Firebase
 async function saveUserData() {
-    if (!auth.currentUser || !nameInput || !phoneInput || !mailInput) {
-        console.error("沒有登入的用戶或找不到必要的輸入欄位");
+    if (!database || !auth || !auth.currentUser || !nameInput || !phoneInput || !mailInput) {
+        console.error("Firebase 服務尚未初始化或沒有登入的用戶或找不到必要的輸入欄位");
         return;
     }
 
@@ -104,8 +123,8 @@ async function saveUserData() {
 
 // 從 Firebase 獲取用戶數據
 function loadUserData() {
-    if (!auth.currentUser || !nameInput || !phoneInput || !mailInput) {
-        console.error("沒有登入的用戶或找不到必要的輸入欄位");
+    if (!database || !auth || !auth.currentUser || !nameInput || !phoneInput || !mailInput) {
+        console.error("Firebase 服務尚未初始化或沒有登入的用戶或找不到必要的輸入欄位");
         return;
     }
     const userRef = ref(database, `users/${auth.currentUser.uid}`);
@@ -130,25 +149,32 @@ function loadUserData() {
     });
 }
 
-//監聽登入/登出狀態，當使用者登入或登出時，會自動觸發這個回調函式
-auth.onAuthStateChanged((user) => {
-    if (!nameInput || !phoneInput || !mailInput) return;
-    
-    if (user) {
-        // 若 user 存在（代表使用者登入），則執行 loadUserData(); 來載入該使用者的資料
-        loadUserData();
-    } else {
-        // 若 user 為 null（代表使用者登出），則清空 nameInput、phoneInput 和 mailInput，避免顯示錯誤資訊
-        nameInput.value = '';
-        phoneInput.value = '';
-        mailInput.value = '';
+// 設定認證狀態監聽器
+function setupAuthListener() {
+    if (!auth) {
+        console.error('❌ auth 尚未初始化');
+        return;
     }
-});
+    
+    //監聽登入/登出狀態，當使用者登入或登出時，會自動觸發這個回調函式
+    auth.onAuthStateChanged((user) => {
+        if (!nameInput || !phoneInput || !mailInput) return;
+        
+        if (user) {
+            // 若 user 存在（代表使用者登入），則執行 loadUserData(); 來載入該使用者的資料
+            loadUserData();
+        } else {
+            // 若 user 為 null（代表使用者登出），則清空 nameInput、phoneInput 和 mailInput，避免顯示錯誤資訊
+            nameInput.value = '';
+            phoneInput.value = '';
+            mailInput.value = '';
+        }
+    });
+}
 
 // 當 DOM 載入完成後初始化
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
     initializeElements();
-    
     if (TInputs) {
         TInputs.forEach(input => {
             input.readOnly = true;
@@ -156,7 +182,14 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
     
-    if (auth.currentUser) {
-        loadUserData();
+    // 初始化 Firebase 服務
+    const servicesInitialized = await initializeFirebaseServices();
+    if (servicesInitialized) {
+        // 設定認證狀態監聽器
+        setupAuthListener();
+        
+        if (auth.currentUser) {
+            loadUserData();
+        }
     }
 });

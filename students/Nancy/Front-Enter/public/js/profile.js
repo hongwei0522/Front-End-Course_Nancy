@@ -2,10 +2,25 @@
 import { renderLikePageCard } from './cardRenderer.js';
 import { getDatabase, ref, get, remove } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-database.js";
 import { getAuth } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-auth.js";
-import { app } from './firebase.js';
+import { app, initializeFirebase } from './firebase-core.js';
 
-const database = getDatabase(app);
-const auth = getAuth(app);
+let database, auth;
+
+// 初始化 Firebase 服務
+async function initializeFirebaseServices() {
+    try {
+        await initializeFirebase();
+        if (!app) {
+            throw new Error('Firebase app 尚未初始化');
+        }
+        database = getDatabase(app);
+        auth = getAuth(app);
+        return true;
+    } catch (error) {
+        console.error('❌ Firebase 服務初始化失敗:', error);
+        return false;
+    }
+}
 
 // 選擇 DOM 元素
 const Profile = document.querySelector(".profile");  // 個人資料按鈕
@@ -127,7 +142,14 @@ Profile.addEventListener("click", () => {
 });
 
 // 當頁面載入時，監聽用戶登入狀態
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
+    // 初始化 Firebase 服務
+    const servicesInitialized = await initializeFirebaseServices();
+    if (!servicesInitialized) {
+        console.error('❌ Firebase 服務初始化失敗');
+        return;
+    }
+    
     auth.onAuthStateChanged((user) => {
         if (user) {
             if (!LikePage.classList.contains('hidden')) {
