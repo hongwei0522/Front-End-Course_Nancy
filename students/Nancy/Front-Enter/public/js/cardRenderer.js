@@ -12,12 +12,6 @@ initializeDatabaseService();
 // article的渲染函數
 export function renderCard(obj, container) {
     try {
-        const user = getCurrentUser();
-        if (!user) {
-            alert('請先登入');
-            return;
-        }
-
         // 將文章加入收藏;
         const Article = document.createElement("div");
         Article.classList.add("article");
@@ -133,13 +127,21 @@ export function renderCard(obj, container) {
         // 檢查文章是否已被收藏
         async function checkIfCollected() {
             const user = getCurrentUser();
-            if (!user) return;
+            if (!user) {
+                // 如果沒有登入，顯示未收藏狀態，點擊時會提示登入
+                Collected.classList.add('hidden');
+                UnCollect.classList.remove('hidden');
+                return;
+            }
 
             try {
                 const isCollected = await isPostCollected(obj.id);
                 if (isCollected) {
                     UnCollect.classList.add('hidden');
                     Collected.classList.remove('hidden');
+                } else {
+                    UnCollect.classList.remove('hidden');
+                    Collected.classList.add('hidden');
                 }
             } catch (error) {
                 console.error('檢查收藏狀態失敗:', error);
