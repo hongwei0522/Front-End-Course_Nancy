@@ -3,17 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <meta name="referrer" content="strict-origin-when-cross-origin">
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/animate.css">
-    <link rel="stylesheet" href="css/article.css">
-    <link rel="stylesheet" href="css/content.css">
     <link rel="stylesheet" href="css/testGo.css">
     <link rel="stylesheet" href="css/loginIn.css">
-    <link rel="stylesheet" href="css/profile.css">
     <script src="/js/toTop.js"></script>
-    <title>會員中心</title>
+    <title>Front-Enter - 前端轉職資訊</title>
 </head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-W99RS9LE48"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-W99RS9LE48');
+</script>
 <body>
     <div class="navbar">
         <a href="/index.html" class="logo">
@@ -38,45 +45,69 @@
         <img src="./image/FE_test_go.png" alt="">
     </div>
     <section>
-        <div class="carousel">
-            <img src="./image/profile01.jpg" class="active" alt="圖片1">
-            <img src="./image/profile02.jpg" alt="圖片2">
-            <img src="./image/profile04.jpg" alt="圖片3">
-            <div class="carousel-text bInput">會員中心</div>
+        <div class="container">
+            <p class="frontEnter">FRONT-ENTER</p>
+            <p class="news">前端轉職資訊</p>
+            <img src="./image/next.svg" alt="">
         </div>
     </section>
     <main>
-        <div class="left">
-            <div class="profileBtn profile">個人資料</div>
-            <a href=post.html class="profileBtn postManage">貼文管理</a>
-            <div class="profileBtn like">收藏</div>
-            <div class="profileBtn loginOut">登出</div>
+        <div class="test">
+            <div class="testWord">
+                <p class="test1">想知道自己適合什麼學習環境嗎？</p>
+                <p class="test2">可以點擊按鈕測測看哦！</p>
+                <div class="testGo">測驗GO</div>
+            </div>
         </div>
-        <div class="right">
-            <div class="personPage">
-                <div class="personPic"></div>
-            <div class="table">
-                <div class="tItem">
-                    <div class="tTitle ">姓名</div>
-                    <input class="tInput tName" type="text">
+        <div class="room">
+            <div class="roomWord">
+                <p class="roomText">教室精選</p>
+                <a href="/content.html?id=-LNyUA-GLYQyCACdkDjg&source=test" class="room1">AppWorks School</a>
+                <a href="/content.html?id=-LNiP-cd31m_XrDZJxdl&source=test" class="room2">彭彭的課程教學</a>
+                <a href="/content.html?id=-LNy_jj1Fj-HF0XbbRtb&source=test" class="room3">五倍紅寶石</a>
+            </div>
+            
+        </div>
+        <div class="skill">
+            <div class="skillWord">
+                <div class="service explore">
+                    <img src="./image/FE_pen.png" alt="">
+                    <p class="title">探索</p>
+                    <div class="line">____</div>
+                    <div class="text">
+                        <p>
+                            我們提供公正的資訊，<br>
+                            幫您順利轉職，<br>
+                            並追蹤最新的業界動態。
+                        </p>
+                    </div>
+                    <a href="/article.html" class="btn">找學校</a>
                 </div>
-                <div class="tItem">
-                    <div class="tTitle ">手機</div>
-                    <input class="tInput tPhone" type="text">     
-                </div>
-                <div class="tItem">
-                    <div class="tTitle ">信箱</div>
-                    <input class="tInput tMail" type="text">
+                <div class="service tree">
+                    <img src="./image/FE_pen.png" alt="">
+                    <p class="title">技能樹</p>
+                    <div class="line">____</div>
+                    <div class="text">
+                        <p>
+                            前端包含哪些技術？<br>
+                            你又學會了哪些？<br>
+                            趕緊點進來試試看。
+                        </p>   
+                    </div>
+                    <a class="btn">技能樹</a>
                 </div>
             </div>
-            <div class="profileBtn edit">修改資料</div>
-            <div class="editBtns hidden">
-                <div class="profileBtn ensure">確認</div>
-                <div class="profileBtn cancel">取消</div>
-            </div>
-            </div>
-            <div class="likePage hidden">
-                likePage
+            
+        </div>
+        <div class="intro">
+            <div class="introWord">
+                <p class="introTitle">關於</p>
+            <div class="introLine">___</div>
+            <p class="introText">
+                近年來，社會對於軟體工程師的需求急速增加，全台各地的補習也如雨後春筍般開業， 然而人的時間有限，要如何找到適合自己的學習環境？<br>
+                <br>
+                「Front-Enter」特別針對前端工程的學習資源，進行蒐集、分類， 期待讓有志成為前端工程師的人，找到最適合自己的學習環境。
+            </p>
             </div>
         </div>
     </main>
@@ -179,12 +210,28 @@
             <div class="Tbtn"></div>
         </div>
     </div>
-    <script type="module" src="/js/firebase.js"></script>
-    <script type="module" src="/js/firebase-db.js"></script>
-    <script src="/js/search.js"></script>
-    <script src="/js/carousel.js"></script>
-    <script src="/js/testGo.js"></script>
-    <script type="module" src="/js/profile.js"></script>
+    <div class="loginContainer">
+        <div class="loginLogo">
+            <img src="./image/FE_logo-2.png" alt="">
+        </div>
+        <div class="loginInput">
+            <input class="inputEmail" type="text" placeholder="Email">
+            <input class="inputPassword" placeholder="******" type="password" autocomplete="new-password">
+        </div>
+        <div class="forgetPass"><p>忘記密碼？</p></div>
+        <div class="loginNormal">
+            <div class="registerIn">註冊</div>
+            <div class="loginIn">登入</div>
+        </div> 
+        <div class="loginGmail">
+            <div id="googleLoginBtn" class="loginInGmail">Log In With Gmail</div>
+        </div>
+     
+    </div>
+    <script type="module" src="js/app.js"></script>
+    <script type="module" src="/js/firebase-core.js"></script>
+    <script type="module" src="/js/search.js"></script>
+    <script type="module" src="/js/testGo.js"></script>
 </body>
 
 </html>

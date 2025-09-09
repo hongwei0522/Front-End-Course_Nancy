@@ -3,16 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="referrer" content="strict-origin-when-cross-origin">
-    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/animate.css">
     <link rel="stylesheet" href="css/article.css">
     <link rel="stylesheet" href="css/content.css">
     <link rel="stylesheet" href="css/testGo.css">
     <link rel="stylesheet" href="css/loginIn.css">
+    <link rel="stylesheet" href="css/profile.css">
     <script src="/js/toTop.js"></script>
-    <title>文章內容</title>
+    <title>會員中心</title>
 </head>
 <body>
     <div class="navbar">
@@ -39,66 +39,44 @@
     </div>
     <section>
         <div class="carousel">
-            <img src="./image/room01.jpg" class="active" alt="圖片1">
-            <img src="./image/room02.jpg" alt="圖片2">
-            <img src="./image/room03.jpg" alt="圖片3">
-            <div class="carousel-text bInput"></div>
+            <img src="./image/profile01.jpg" class="active" alt="圖片1">
+            <img src="./image/profile02.jpg" alt="圖片2">
+            <img src="./image/profile04.jpg" alt="圖片3">
+            <div class="carousel-text bInput">會員中心</div>
         </div>
     </section>
     <main>
-        <div class="contentLeft">
-            <img class="contentPic" src="./image/2.jpg" alt="">
-            <img class="contentPic" src="/image/13.jpg" alt="">
-            <img class="contentPic" src="./image/15.jpg" alt="">
-            <img class="contentPic" src="/image/7.jpg" alt="">
-            <img class="contentPic" src="./image/AppWorksShool-rectangle.jpg" alt="">
+        <div class="left">
+            <div class="profileBtn profile">個人資料</div>
+            <a href=post.html class="profileBtn postManage">貼文管理</a>
+            <div class="profileBtn like">收藏</div>
+            <div class="profileBtn loginOut">登出</div>
         </div>
-        <div class="contentRight">
-            <div class="top">
-                <div class="topic bInput"></div>
-                <div class="content bInput"></div>
+        <div class="right">
+            <div class="personPage">
+                <div class="personPic"></div>
+            <div class="table">
+                <div class="tItem">
+                    <div class="tTitle ">姓名</div>
+                    <input class="tInput tName" type="text">
+                </div>
+                <div class="tItem">
+                    <div class="tTitle ">手機</div>
+                    <input class="tInput tPhone" type="text">     
+                </div>
+                <div class="tItem">
+                    <div class="tTitle ">信箱</div>
+                    <input class="tInput tMail" type="text">
+                </div>
             </div>
-            <div class="bottom">
-                <div class="bTitle">
-                    整理
-                </div>
-                <div class="bLine">
-                    __
-                </div>
-                <div class="bText">
-                    <div class="bItem">
-                        <div class="bCLass">城市</div>
-                        <div class="bInput bWord"></div>
-                    </div>
-                    <div class="bItem">
-                        <div class="bCLass">班制</div>
-                        <div class="bInput bWord"></div>     
-                    </div>
-                    <div class="bItem">
-                        <div class="bCLass">教法</div>
-                        <div class="bInput bWord"></div>
-                    </div>
-                    <div class="bItem">
-                        <div class="bCLass">天數</div>
-                        <div class="bInput bWord"></div>
-                    </div>
-                    <div class="bItem">
-                        <div class="bCLass">週時</div>
-                        <div class="bInput bWord"></div>
-                    </div>
-                    <div class="bItem">
-                        <div class="bCLass">技術</div>
-                        <div class="bInput bWord"></div>
-                    </div>
-                    <div class="bItem">
-                        <div class="bCLass">信箱</div>
-                        <div class="bInput bWord"></div>
-                    </div>
-                    <div class="bItem">
-                        <div class="bCLass">電話</div>
-                        <div class="bInput bWord"></div>
-                    </div>
-                </div>
+            <div class="profileBtn edit">修改資料</div>
+            <div class="editBtns hidden">
+                <div class="profileBtn ensure">確認</div>
+                <div class="profileBtn cancel">取消</div>
+            </div>
+            </div>
+            <div class="likePage hidden">
+                likePage
             </div>
         </div>
     </main>
@@ -137,17 +115,6 @@
         <img src="./image/FE_logo-4.png" alt="">
     </div>
     <div class="searchDiv"></div>
-    <div class="carouselRoom">
-        <div class="leftArrow"><img src="./image/left-arrow.png" alt=""></div>
-        <div class="slideRoom">
-            <img class="sliderPic" src="./image/2.jpg" alt="">
-            <img class="sliderPic" src="/image/13.jpg" alt="">
-            <img class="sliderPic" src="./image/15.jpg" alt="">
-            <img class="sliderPic" src="/image/7.jpg" alt="">
-            <img class="sliderPic" src="./image/AppWorksShool-rectangle.jpg" alt="">
-        </div>
-        <div class="rightArrow"><img src="./image/right-arrow.png" alt=""></div>
-    </div>
     <div class="testgoContainer">
         <div class="testgogo testStart">
             <p class="testTitle">測驗說明</p>
@@ -212,30 +179,13 @@
             <div class="Tbtn"></div>
         </div>
     </div>
-    <div class="loginContainer">
-        <div class="loginLogo">
-            <img src="./image/FE_logo-2.png" alt="">
-        </div>
-        <div class="loginInput">
-            <input class="inputEmail" type="text" placeholder="Email">
-            <input class="inputPassword" placeholder="******" type="password" autocomplete="new-password">
-        </div>
-        <div class="forgetPass"><p>忘記密碼？</p></div>
-        <div class="loginNormal">
-            <div class="registerIn">註冊</div>
-            <div class="loginIn">登入</div>
-        </div> 
-        <div class="loginGmail">
-            <div id="googleLoginBtn" class="loginInGmail">Log In With Gmail</div>
-        </div>
-     
-    </div>
-    <script type="module" src="/js/firebase.js"></script>
-    <script type="module" src="/js/firebase-db.js"></script>
-    <script src="/js/search.js"></script>
-    <script src="/js/carousel.js"></script>
-    <script src="/js/carouselRoom.js"></script>
-    <script type="module" src="/js/content.js"></script>
-    <script type="module" src="/js/testGo_content.js"></script>
+    <script type="module" src="js/app.js"></script>
+    <script type="module" src="/js/firebase-core.js"></script>
+    <script type="module" src="/js/database-service.js"></script>
+    <script type="module" src="/js/search.js"></script>
+    <script type="module" src="/js/carousel.js"></script>
+    <script type="module" src="/js/testGo.js"></script>
+    <script type="module" src="/js/profile.js"></script>
 </body>
+
 </html>

@@ -1,0 +1,89 @@
+{
+  "hosting": {
+    "public": "public",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "node_modules/**"
+    ],
+    "rewrites": [
+      {
+        "source": "/content",
+        "destination": "/content.html"
+      },
+      {
+        "source": "/profile",
+        "destination": "/profile.html"
+      },
+      {
+        "source": "/article",
+        "destination": "/article.html"
+      },
+      {
+        "source": "/post",
+        "destination": "/post.html"
+      },
+      {
+        "source": "/404",
+        "destination": "/404.html"
+      },
+      {
+        "source": "**/*.html",
+        "destination": "**/*.html"
+      },
+      {
+        "source": "**/*.js",
+        "destination": "**/*.js"
+      },
+      {
+        "source": "**/*.json",
+        "destination": "**/*.json"
+      },
+      {
+        "source": "**/*.css",
+        "destination": "**/*.css"
+      },
+      {
+        "source": "**/*.{png,jpg,jpeg,gif,svg,webp,ico}",
+        "destination": "**/*.{png,jpg,jpeg,gif,svg,webp,ico}"
+      },
+      {
+        "source": "**/*.{eot,otf,ttf,woff,woff2}",
+        "destination": "**/*.{eot,otf,ttf,woff,woff2}"
+      },
+      {
+        "source": "/",
+        "destination": "/index.html"
+      }
+    ],
+    "headers": [
+      {
+        "source": "**/*.js",
+        "headers": [
+          {
+            "key": "Content-Type",
+            "value": "application/javascript"
+          }
+        ]
+      },
+      {
+        "source": "**/*.json",
+        "headers": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ]
+      },
+      {
+        "source": "**/*.css",
+        "headers": [
+          {
+            "key": "Content-Type",
+            "value": "text/css"
+          }
+        ]
+      }
+    ]
+  }
+}

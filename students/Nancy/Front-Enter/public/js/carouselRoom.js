@@ -26,6 +26,7 @@ left.onclick = function(e) {
     // 防止點擊事件從 left 按鈕傳播到其他父層元素（例如 carousel 容器）
     e.stopPropagation();
     // 更新索引
+    //即使 index 為 0，計算後會回到最後一張圖片，實現環狀輪播。這是因為加上長度後，結果永遠是正的。
     index = (index - 1 + carouselImages.length) % carouselImages.length;
     // 顯示新圖片
     showImage(index);
@@ -65,7 +66,7 @@ document.addEventListener('click', function(e) {
         carouselRoom.classList.remove('show');
     }
 });
-// 初始化
+// 初始化，確保輪播一開始就顯示正確的圖片，並確保 index 變數和畫面同步
 document.addEventListener('DOMContentLoaded', function() {
     console.log("初始化輪播圖");
     showImage(index);

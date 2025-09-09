@@ -1,9 +1,12 @@
-import { getDatabase, ref, push, onValue, off, remove, update } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-database.js";
-import { getAuth } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-auth.js";
-import { app } from './firebase.js';
-
-const database = getDatabase(app);
-const auth = getAuth(app);
+import { 
+    initializeDatabaseService,
+    getCurrentUser,
+    onAuthStateChanged,
+    onPostsChanged,
+    createPost,
+    updatePost,
+    deletePosts
+} from './database-service.js';
 
 // DOM 元素
 const className = document.getElementById("className");
@@ -118,7 +121,7 @@ function clearInputs() {
 
 // 檢查用戶登入狀態
 function checkAuthState() {
-    const user = auth.currentUser;
+    const user = getCurrentUser();
     if (!user) {
         console.log('用戶未登入');
         if (list) {
@@ -131,31 +134,20 @@ function checkAuthState() {
 
 // 在每個文章中添加編輯按鈕
 function loadPosts(deleteMode = false) {
-    //ref(database, 'posts')：從 Firebase Realtime Database 取得 posts 節點的參照 (Reference)。
-    // off(postsRef)：關閉對 postsRef 的監聽，以確保不會重複綁定監聽器。
-    const postsRef = ref(database, 'posts');
-    off(postsRef);
-
     // 添加載入中的提示訊息
     if (list) {
         list.innerHTML = '<div class="loading-message">文章正在路上...</div>';
     }
-    // onValue(postsRef, callback)：監聽 postsRef 節點的變化，當資料更新時執行回調函式。
-    // snapshot.val() 取得 posts 節點的所有資料。
-    onValue(postsRef, (snapshot) => {
+    
+    onPostsChanged((posts) => {
         if (!list) return;
         
-        const posts = snapshot.val();
-        
         while (list.firstChild) {
-            //每次載入文章前，先移除 list 裡所有子元素，以確保列表不會累積舊的資料。
             list.removeChild(list.firstChild);
         }
         
-        if (posts) {
-            // Object.entries(posts)：將 posts 物件轉換為 [id, post] 陣列。
+        if (posts && Object.keys(posts).length > 0) {
             Object.entries(posts)
-                // .sort(([, a], [, b]) => b.createdAt - a.createdAt)：按照 createdAt（建立時間）由新到舊排序。
                 .sort(([, a], [, b]) => b.createdAt - a.createdAt)
                 .forEach(([id, post]) => {
                     const container = document.createElement('div');
@@ -237,7 +229,6 @@ function loadPosts(deleteMode = false) {
 
                     // 監聽摺疊展開事件
                     details.addEventListener('toggle', function() {
-                        //this 指向綁定事件的元素，也就是這個 details
                         const buttonContainer = this.querySelector('.edit-button-container');
                         if (this.open) {
                             // 確保畫面中最多只會有一個 <details> 是展開的，並且只顯示對應的編輯按鈕
@@ -262,12 +253,14 @@ function loadPosts(deleteMode = false) {
                         }
                     });
                 });
+        } else {
+            list.innerHTML = '<p>還沒有文章</p>';
         }
     });
 }
 
 // 添加更新文章的功能
-async function updatePost(postId) {
+async function updatePostById(postId) {
     if (!checkAuthState()) {
         alert('請先登入再編輯文章');
         return;
@@ -284,16 +277,11 @@ async function updatePost(postId) {
         weekHour: weekHour.value,
         technology: technology.value,
         mail: mail.value,
-        phone: phone.value,
-        userId: auth.currentUser.uid,
-        updatedAt: Date.now()
+        phone: phone.value
     };
 
     try {
-        // ref(database, 'posts/${postId}') 會返回一個指向 posts 節點中具體文章（由 postId 指定）的參照。
-        const postRef = ref(database, `posts/${postId}`);
-        // await 等待 update(postRef, postData) 完成，即資料被更新到 Firebase
-        await update(postRef, postData);
+        await updatePost(postId, postData);
         alert('文章更新成功！');
         clearInputs();
         
@@ -313,7 +301,7 @@ if (saveEditBtn) {
         // editingPostId是儲存當前編輯的文章ID
         const postId = saveEditBtn.dataset.editingPostId;
         if (postId) {
-            updatePost(postId);
+            updatePostById(postId);
         }
     });
 }
@@ -345,14 +333,11 @@ async function savePost() {
         weekHour: weekHour.value,
         technology: technology.value,
         mail: mail.value,
-        phone: phone.value,
-        userId: auth.currentUser.uid,
-        createdAt: Date.now()
+        phone: phone.value
     };
 
     try {
-        const postsRef = ref(database, 'posts');
-        await push(postsRef, postData);
+        await createPost(postData);
         alert('文章發布成功！');
         clearInputs();
         
@@ -383,11 +368,8 @@ async function deleteSelectedPosts() {
     }
 
     try {
-        for (const checkbox of selectedCheckboxes) {
-            const postId = checkbox.dataset.postId;
-            const postRef = ref(database, `posts/${postId}`);
-            await remove(postRef);
-        }
+        const postIds = Array.from(selectedCheckboxes).map(checkbox => checkbox.dataset.postId);
+        await deletePosts(postIds);
         
         alert('文章刪除成功！');
         exitDeleteMode();
@@ -422,11 +404,18 @@ if (cancelDeleteBtn) {
 }
 
 // 當網頁載入時執行初始化
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
+    // 初始化資料庫服務
+    const servicesInitialized = await initializeDatabaseService();
+    if (!servicesInitialized) {
+        console.error('❌ 資料庫服務初始化失敗');
+        return;
+    }
+    
     initializePage();
     
     // 監聽用戶登入狀態
-    auth.onAuthStateChanged((user) => {
+    onAuthStateChanged((user) => {
         if (user) {
             console.log('用戶已登入:', user.email);
             loadPosts();
